@@ -1,0 +1,59 @@
+.profile {
+    overflow: hidden;
+    .padding-box {
+        padding: 15px;
+    }
+    img {
+        width: 100%;
+    }
+    .ant-skeleton-element .ant-skeleton-image-svg {
+        max-width: 100%;
+        width: 100%;
+    }
+    .ant-skeleton-element .ant-skeleton-image {
+        width: 100%;
+    }
+    .text-box {
+        padding: 15px 0 0 20px;
+        .username {
+            color: #3e3f42;
+            font-size: 22px;
+            font-weight: 500;
+            line-height: 32px;
+        }
+        .univer-name {
+            color: #9ea0a5;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+        }
+    }
+    .user-info {
+        padding-bottom: 0;
+        h3 {
+            color: #3e3f42;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        p {
+            color: #9ea0a5;
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+    .profile-menu {
+        width: 100%;
+        .ant-menu-inline,
+        .ant-menu-vertical,
+        .ant-menu-vertical-left {
+            border: none;
+        }
+        .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+            background-color: #1665D8;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+}
