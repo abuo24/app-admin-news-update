@@ -1,12 +1,19 @@
-import React, {lazy} from 'react';
+import React, {useEffect} from 'react';
 import {StatisticPage} from "./../index";
-// const Dashboard = lazy(() => import("./rootDirectories/Dashboard/Dashboard"));
-// const StatisticPage = lazy(() => import("./../index"));
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
+    useEffect(() => {
+
+    }, []);
+
     return (
         <StatisticPage/>
     );
 };
 
-export default Dashboard;
+const mstp = (state) => (state);
+const mdtp = (dispatch) => (bindActionCreators({}, dispatch));
+
+export default connect(mstp, mdtp)(Dashboard);

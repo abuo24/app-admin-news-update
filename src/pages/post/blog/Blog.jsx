@@ -1,16 +1,29 @@
-import React from 'react';
+import React, {Component} from 'react';
 import BlogSlider from "./BlogSlider";
 import BlogContent from "./BlogContent";
 import "./../../dashboard/Card/Card.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {getPost} from "../../../redux/action/posts";
 
-const Blog = () => {
-    return (
-        <>
-            <BlogSlider/>
-            <BlogContent/>
-        </>
-    );
-};
+class Blog extends Component {
 
-export default Blog;
+
+    render() {
+
+        return (
+            <>
+                <BlogSlider/>
+                <BlogContent/>
+            </>
+        );
+    }
+}
+
+const mstp = (state) => (state);
+
+const mdtp = dispatch => (bindActionCreators({getPost}, dispatch));
+
+
+export default connect(mstp, mdtp)(Blog);

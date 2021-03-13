@@ -1,72 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col} from "antd";
 import {CardItem} from "../index";
 import CategoryPost from "../category/categoryPost";
+import {bindActionCreators} from "redux";
+import {getCategories, getNewsByViewsCount} from "../../redux/action/posts";
+import {connect} from "react-redux";
 
-const Posts = () => {
+const Posts = (props) => {
 
-    const [posts, setPosts] = useState([{
-            categoryTitle: "world", posts: [
-                {
-                    id: 1,
-                    title: "blog1",
-                    views: 123,
-                    likes: 123,
-                    date: "07 Yanvar 2020",
-                    comments: 1900
-                },
-                {
-                    id: 2,
-                    title: "blog2",
-                    views: 123,
-                    likes: 123,
-                    date: "07 Yanvar 2020",
-                    comments: 1900
-                },
-                {
-                    id: 3,
-                    title: "blog3",
-                    views: 123,
-                    likes: 123,
-                    date: "07 Yanvar 2020",
-                    comments: 1900
-                }]
-        },
-            {
-                categoryTitle: "business", posts: [
-                    {
-                        id: 1,
-                        title: "blog1",
-                        views: 123,
-                        likes: 123,
-                        date: "07 Yanvar 2020",
-                        comments: 1900
-                    },
-                    {
-                        id: 2,
-                        title: "blog2",
-                        views: 123,
-                        likes: 123,
-                        date: "07 Yanvar 2020",
-                        comments: 1900
-                    },
-                    {
-                        id: 3,
-                        title: "blog3",
-                        views: 123,
-                        likes: 123,
-                        date: "07 Yanvar 2020",
-                        comments: 1900
-                    }]
-            },
-        ])
-    ;
+    useEffect(() => {
+    props.getCategories()
+    });
 
-    const getPosts = posts.map((item, key) => (<CategoryPost postList={item.posts} key={key} title={item.categoryTitle}/>));
+    const category = props.category_reducer.categories;
+    console.log(category);
+
+    // const getPosts = posts.map((item, key) => (<CategoryPost postList={item.posts} key={key} title={item.categoryTitle}/>));
+
+    const categoryList = category && category.map((item) => (
+        <CategoryPost id={item.id} key={item.id} title={item.name}/>));
 
     return (<div>
-        {getPosts}
+        {categoryList}
     </div>);
 };
 
-export default Posts;
+const mstp = (state) => (state);
+
+const mdtp = (dispatch) => (bindActionCreators({getCategories}, dispatch));
+
+export default connect(mstp, mdtp)(Posts);

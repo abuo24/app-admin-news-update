@@ -1,72 +1,70 @@
-import React, {useState} from 'react';
-import {Card, Col, Meta, Row, Statistic} from "antd";
+import React, {useEffect, useState} from 'react';
+import {Col, Row, Statistic} from "antd";
 import "./../dashboard/Card/Card.css"
-import Title from "antd/lib/typography/Title";
-import {NavLink} from "react-router-dom";
-import SettingOutlined from "@ant-design/icons/lib/icons/SettingOutlined";
-import EditOutlined from "@ant-design/icons/lib/icons/EditOutlined";
-import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
-import {EyeOutlined, HeartOutlined} from "@ant-design/icons";
-import TimelineItem from "antd/es/timeline/TimelineItem";
-import ClockCircleOutlined from "@ant-design/icons/lib/icons/ClockCircleOutlined";
 import {CardItem} from "./../index";
+import axios from "axios";
+import {host} from "../../server/host";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
+const StatisticPage = (props) => {
 
-const StatisticPage = () => {
-    const [posts, setPosts] = useState([
-        {
-            id: 1,
-            title: "blog1",
-            views: 123,
-            likes: 123,
-            date: "07 Yanvar 2020",
-            comments: 1900
-        },
-        {
-            id: 2,
-            title: "blog2",
-            views: 123,
-            likes: 123,
-            date: "07 Yanvar 2020",
-            comments: 1900
-        },
-        {
-            id: 3,
-            title: "blog3",
-            views: 123,
-            likes: 123,
-            date: "07 Yanvar 2020",
-            comments: 1900
-        },
-        {
-            id: 3,
-            title: "blog3",
-            views: 123,
-            likes: 123,
-            date: "07 Yanvar 2020",
-            comments: 1900
-        },
-    ]);
+    const [commentsCounts, setCommentsCounts] = useState(0);
+    const [viewsCounts, setViewsCounts] = useState(0);
+    const [likesCounts, setLikesCounts] = useState(0);
+    const [postCount, setPostCount] = useState(0);
+    console.log(props);
 
-    const getPosts = posts.map((item, key) => (<Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+    const posts = props.post_reducer.most_views && props.post_reducer.most_views.data;
+    const list = posts && posts.sort((a, b) => (a.viewsCount > b.viewsCount) ? -1 : 1);
+    const getPosts = list && list.slice(0, 4).map((item, key) => (
+        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+
+    const likes = posts && posts.sort((a, b) => (a.likesCount > b.likesCount) ? -1 : 1);
+    const getLikes = likes && likes.slice(0, 4).map((item, key) => (
+        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+
+    const comments = posts && posts.sort((a, b) => (a.comments.length > b.comments.length) ? -1 : 1);
+    const getComments = likes && likes.slice(0, 4).map((item, key) => (
+        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+
+    useEffect(() => {
+        axios.get(`${host}/admin/news/all`).then(res => {
+            setPostCount(res.data.data.length);
+        }).catch(err => console.log(err)
+        );
+        axios.get(`${host}/admin/summa`).then(res => {
+            setCommentsCounts(res.data.data.comments);
+            setLikesCounts(res.data.data.likes);
+            setViewsCounts(res.data.data.views);
+        }).catch(
+            err => console.log(err)
+        );
+    }, []);
 
     return (
         <>
             <Row>
                 <Col span={6}>
-                    <Statistic title="Umumiy Postlar" value={112893}/>
+                    <Statistic title="Umumiy Postlar" value={postCount}/>
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Umumiy Commentlar" value={112893} precision={2}/>
+                    <Statistic title="Umumiy Commentlar" value={
+                        commentsCounts
+                    }/>
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Umumiy Yoqtirishlar" value={112893}/>
+                    <Statistic title="Umumiy Yoqtirishlar" value={
+                        likesCounts
+                    }/>
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Umumiy Ko'rishlar" value={112893} precision={2}/>
+                    <Statistic title="Umumiy Ko'rishlar" value={
+                        viewsCounts
+                    }/>
                 </Col>
             </Row>
-            <Row style={{margin: +"10px 0"}}>
+            <Row style={{margin: +"10px 0px"}}>
                 <Col>
                     <div className="section-top-bar">
                         <h4>Eng ko'p ko'rishlar</h4>
@@ -82,17 +80,17 @@ const StatisticPage = () => {
                         <h4>Eng ko'p yoqtirishlar</h4>
                     </div>
                     <Row>
-                        {getPosts}
+                        {getLikes}
                     </Row>
                 </Col>
             </Row>
-            <Row style={{margin: +"10px 0"}}>
+            <Row style={{margin: +"10px 0px"}}>
                 <Col>
                     <div className="section-top-bar">
                         <h4>Eng ko'p Commentlar</h4>
                     </div>
                     <Row>
-                        {getPosts}
+                        {getComments}
                     </Row>
                 </Col>
             </Row>
@@ -100,4 +98,11 @@ const StatisticPage = () => {
     );
 };
 
-export default StatisticPage;
+const mstp = (state) => (state);
+
+// const mdtp = (dispatch) =>(bindActionCreators({},dispatch))
+
+export default connect(mstp,
+    null
+    // mdtp
+)(StatisticPage);
