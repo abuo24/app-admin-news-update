@@ -7,7 +7,7 @@ import {getFile} from "../../../server/host";
 const BlogSlider = (props) => {
 
     return (
-        <div >
+        <div>
             <div className="blog-post-slider">
                 <div className="container">
                     <div className="row">

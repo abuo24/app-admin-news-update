@@ -10,8 +10,6 @@ const ShortNews = (props) => {
     const category = props.category_reducer.categories;
     console.log(category);
 
-    // const getPosts = posts.map((item, key) => (<CategoryPost postList={item.posts} key={key} title={item.categoryTitle}/>));
-
     const categoryList = category&&category.map((item)=>(<Cards id={item.id} key={item.id} title={item.name}/>));
 
     return (<div>

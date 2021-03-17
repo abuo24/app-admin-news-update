@@ -226,6 +226,7 @@ class CategoryTable extends React.Component {
 
         return (<>
             <Table
+                size={"small"}
                 components={components}
                 rowClassName={() => 'editable-row'}
                 columns={columns}

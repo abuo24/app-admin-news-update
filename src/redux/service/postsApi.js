@@ -21,8 +21,14 @@ export const postsApi = {
         return axiosInstanceAdmin.post(`${host}/admin/news/add`, data,config
         )
     },
+    editPost: (id,data) => {
+        return axiosInstanceAdmin.put(`${host}/admin/news/${id}`, data,config)
+    },
     addImg: (data) => {
         return axiosInstanceAdmin.post(`${host}/admin/news/upload`, data,config
         )
+    },
+    delete: (id) => {
+        return axiosInstanceAdmin.delete(`${host}/admin/news/${id}`,config)
     }
 };

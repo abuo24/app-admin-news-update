@@ -8,7 +8,6 @@ import CKEditor from "ckeditor4-react";
 import ExclamationCircleOutlined from "@ant-design/icons/lib/icons/ExclamationCircleOutlined";
 import {shortNewsApi} from "../../redux/service/shortNewsApi";
 import {Redirect} from "react-router-dom";
-// import * as toast from "react-toastify";
 import {ToastContainer, toast} from "react-toastify";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -21,11 +20,12 @@ class ShortNewsItem extends React.Component {
         loading: true,
         isModalVisible: false,
         category: "",
+        category_id: this.props.post.category.id,
         title: ""
     };
     componentDidMount() {
         if (this.props.post != null) {
-            this.setState({loading: false})
+            this.setState({loading: false,category_id: this.props.post.category.id})
         }
         console.log(this.props)
     }
@@ -72,7 +72,6 @@ class ShortNewsItem extends React.Component {
                 okText: 'Ha',
                 cancelText: "Yo'q",
                 onOk() {
-
                     shortNewsApi.delete(props.post && props.post.id).then(
                         res => {
                             // console.log(res)

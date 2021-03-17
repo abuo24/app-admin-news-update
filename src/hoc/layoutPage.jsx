@@ -54,7 +54,7 @@ const LayoutPage = (props) => {
                         </Menu.Item>
 
                         <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                            <NavLink to={"/dashboard"}>Statistika</NavLink>
+                            <NavLink to={"/"}>Statistika</NavLink>
                         </Menu.Item>
                         <Menu.Item key="2" icon={<BsFilePost/>}>
                             <NavLink to={"/posts"}>Postlar</NavLink>

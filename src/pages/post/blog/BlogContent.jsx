@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {AiOutlineArrowRight} from "react-icons/all";
 import {ToastContainer, toast} from "react-toastify"
 import {postsApi} from "../../../redux/service/postsApi";
+import CKEditor from "ckeditor4-react";
 
 const BlogContent = (props) => {
 
@@ -40,8 +41,7 @@ const BlogContent = (props) => {
             {post &&
             <div className="col-md-12 col-sm-12 bg-white pt-4">
                 <div className="blog-post-details">
-                    <p className="blog-text">
-                        {post.content}
+                    <p className="blog-text" dangerouslySetInnerHTML={{ __html: post.content }}>
                     </p>
 
                     <div className="bp-tag-area">

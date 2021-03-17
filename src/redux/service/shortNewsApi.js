@@ -14,7 +14,7 @@ export const shortNewsApi = {
     },
     edit: (id,data) => {
         return axiosInstanceAdmin.put(`${host}/admin/shortnews/${id}`, {
-            category_id: data.category,
+            category_id: data.category_id,
             title: data.title
         })
     }

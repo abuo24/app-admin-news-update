@@ -7,9 +7,9 @@ const Message = (props) => {
     console.log(props.message_reducer.messages);
 
 
-    const getMessage = props.message_reducer.messages&&props.message_reducer.messages.data.map((item, key)=>(
+    const getMessage = props.message_reducer.messages&&props.message_reducer.messages.data&&props.message_reducer.messages.data!=null?props.message_reducer.messages&&props.message_reducer.messages.data&&props.message_reducer.messages.data.map((item, key)=>(
         <MessageItem key={key} message={item} />
-    ))
+    )):"";
 
     return (
         <div>

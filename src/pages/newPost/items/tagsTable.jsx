@@ -60,6 +60,8 @@ class TagsTable extends Component {
         return (
             <div>
                 <Table
+
+                    size={"small"}
                     bordered
                     columns={columns}
                     dataSource={this.props && this.props.tags_reducer && this.props.tags_reducer.tags.data}

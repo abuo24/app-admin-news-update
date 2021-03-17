@@ -28,7 +28,11 @@ const App = (props) => {
     useEffect(() => {
         if (localStorage.getItem("token")) {
             setIsLogged(true);
-            props.getMe();
+            props.getMe().then().catch(
+                err=>{localStorage.removeItem("token")
+                window.location.reload()
+                }
+            );
             props.getNewsByViewsCount();
             props.getCategories();
             props.getTags();
@@ -56,7 +60,7 @@ const App = (props) => {
 
             <Switch>
                 <LayoutPage>
-                    <Route exact path={"/dashboard"} component={Dashboard}/>
+                    <Route exact path={"/"} component={Dashboard}/>
                     <Route exact path={"/blog/:id"} component={Post}/>
                     <Route exact path={"/posts"} component={Posts}/>
                     <Route exact path={"/profile"} component={Profile}/>

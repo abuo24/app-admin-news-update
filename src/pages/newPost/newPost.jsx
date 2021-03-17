@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CKEditor from 'ckeditor4-react'
-import {Button, Col, Collapse, DatePicker, Form, Input, Row, Select, Upload, message} from "antd";
+import {Button, Col, Form, Input, Row, Select, Upload, message} from "antd";
 import {Option} from "antd/lib/mentions";
 import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
 import {bindActionCreators} from "redux";
@@ -131,7 +131,7 @@ const NewPost = (props) => {
             ...dataPost,
             content: evt.editor.getData()
         });
-    }
+    };
 
 
     console.log(data);
@@ -163,7 +163,6 @@ const NewPost = (props) => {
                             id="for_clear"
                             {...propsData}
                             accept=".jpg"
-                            // onChange={handleupload}
                             listType={"picture"}>
                             <Button icon={<UploadOutlined/>}>Post Rasmini yuklash</Button>
                         </Upload></Form.Item>

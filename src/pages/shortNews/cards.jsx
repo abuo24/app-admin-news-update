@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Col, Row} from "antd";
+import {Col, Pagination, Row} from "antd";
 import {CardItem} from "../index";
 import {bindActionCreators} from "redux";
 import {getNewsByCategoryId} from "../../redux/action/posts";
@@ -10,16 +10,45 @@ import {getPostByCategoryId} from "../../redux/action/shortPostApi";
 const Cards = (props) => {
 
     const [postList,setPostList] =useState(null);
+    const [paginationList, setPaginationList] = useState({
+        totalPage: 0,
+        totalItems: 0,
+        current: 1,
+        minIndex: 0,
+        maxIndex: 0,
+        pageSize: 0
+    });
 
     useEffect(()=>{
         props.getPostByCategoryId(props.id).then(res=>{setPostList({posts: res.payload.data&&res.payload.data.shortnews})
-            console.log(res)
+            setPaginationList({
+                ...paginationList,
+                current:  res.payload.data.currentPage+1,
+                minIndex: 0,
+                totalPage: res.payload.data.totalPages,
+                totalItems: res.payload.data.totalItems,
+                maxIndex:  res.payload.data.shortnews.length,
+                pageSize:  res.payload.data.shortnews.length,
+            });
         }).catch(err=>console.log(err))
     },[]);
 
-    console.log(postList&&postList.posts)
+
     const getPosts = postList&&postList.posts&&postList.posts.map((item, key) => (<Col key={key} span={6}><ShortNewsItem post={item} key={item.id}/></Col>));
 
+    const {data, current, minIndex, maxIndex, pageSize} = paginationList;
+
+    const handleChange = (page) => {
+        props.getPostByCategoryId(props.id,page-1).then(res=>{setPostList({posts: res.payload.data.shortnews})
+            setPaginationList({
+                ...paginationList,
+                current:  page,
+                minIndex: 0,
+                totalPage: res.payload.data.totalPages,
+                maxIndex:  res.payload.data.shortnews.length,
+            });
+        }).catch(err=>console.log(err))
+    };
     if (postList&&postList.posts&&postList.posts.length>0){
         return (
             <div>
@@ -34,6 +63,16 @@ const Cards = (props) => {
                             {getPosts}</Row>
                             </Col>
                         </Row>
+                        {paginationList.totalPage>1?
+                            <Pagination
+                                pageSize={paginationList.pageSize && paginationList.pageSize}
+                                current={paginationList.current && paginationList.current}
+                                total={paginationList.totalItems && paginationList.totalItems}
+                                onChange={handleChange}
+                                style={{marginTop: "10px"}}
+                            />:""
+                        }
+
                     </Col>
                 </Row>
             </div>

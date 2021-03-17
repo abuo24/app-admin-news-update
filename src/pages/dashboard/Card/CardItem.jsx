@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Col, Comment, Form, Input, Modal, Row, Select, Skeleton} from "antd";
-import {Link, NavLink} from "react-router-dom";
+import {Button, Col, Comment, Form, Input, Modal, Row, Select, Skeleton, Upload} from "antd";
+import {Link, NavLink, Redirect} from "react-router-dom";
 import "./Card.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {ClockCircleOutlined, CommentOutlined, EyeOutlined} from "@ant-design/icons";
@@ -9,127 +9,303 @@ import EditOutlined from "@ant-design/icons/lib/icons/EditOutlined";
 import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
 import {getFile} from "../../../server/host";
 import ExclamationCircleOutlined from "@ant-design/icons/lib/icons/ExclamationCircleOutlined";
+import {postsApi} from "../../../redux/service/postsApi";
+import {toast, ToastContainer} from "react-toastify";
+import {connect} from "react-redux";
+import {Option} from "antd/lib/mentions";
+import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
+import CKEditor from "ckeditor4-react";
+import {shortNewsApi} from "../../../redux/service/shortNewsApi";
+import CategoryPost from "../../category/categoryPost";
 
 
 const CardItem = (props) => {
-    const [modall, setModall] = useState({
-        isModalVisible: false
+        const [modall, setModall] = useState({
+            isModalVisible: false
+        });
+
+        useEffect(() => {
+        }, [props]);
+
+        const note = () => toast.info("O'chirildi");
+        const noteEdit = () => toast.info("O'zgartirildi");
+        const danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
+
+        function confirm(id) {
+            Modal.confirm({
+                title: "Postni o'chirishni xoxlaysizmi",
+                icon: <ExclamationCircleOutlined/>,
+                okText: 'Ha',
+                cancelText: "Yo'q",
+                onOk() {
+                    postsApi.delete(id).then(res => {
+                        console.log(res)
+                        note();
+                        window.location.reload()
+                    }).catch(err => {
+                        console.log(err)
+                        danger()
+                    })
+                }
+            });
+        }
+
+        const showModal = () => {
+            setModall({...modall, isModalVisible: true});
+        };
+
+        const handleOk = () => {
+           onFinish()
+        };
+
+        const handleCancel = () => {
+            setModall({...modall, isModalVisible: false});
+        };
+
+        const {post} = props;
+        const {categories} = props.category_reducer;
+        const defaultTags = [];
+        post && post.tags.map(item => (
+            defaultTags.push(item.id)
+        ))
+    console.log(post)
+    const [file, setFile] = useState({
+        hashId: post.headAttachment!=null?( getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId):''
     });
 
-    useEffect(() => {
-    }, [props]);
+        const test = new FormData()
 
-    function confirm() {
-        Modal.confirm({
-            title: "Postni o'chirishni xoxlaysizmi",
-            icon: <ExclamationCircleOutlined/>,
-            okText: 'Ha',
-            cancelText: "Yo'q",
+        const propsFile = {
+            // action: `${getFile+post.headAttachment&&post.headAttachment.hashId&&post.headAttachment.hashId}`,
+            onChange({file, fileList}) {
+                if (file.status !== 'uploading') {
+                    console.log(file, fileList);
+                }
+            },
+            defaultFileList: [post.headAttachment!=null?
+                {
+                    uid: `${post.headAttachment&&post.headAttachment.id&&post.headAttachment.id}`,
+                    name: `${post.headAttachment && post.headAttachment.name && post.headAttachment.name}`,
+                    // status: 'done',
+                    // response: 'Server Error 500',
+                    url: `${getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId}`,
+                    thumbUrl: `${getFile+post.headAttachment&&post.headAttachment.hashId&&post.headAttachment.hashId}`,
+                }:''
+            ],
+            customRequest: (options) => {
+                test.append('file', options.file)
+                postsApi.addImg(test).then(res => {
+                        setFile({file: res.data.data})
+                        options.onSuccess(res.data, options.file);
+                        console.log(res);
+                        setFile({hashId: res.data && res.data.data && res.data.data})
+                    }
+                ).catch(err => console.log(err))
+            }
+        };
+        const [form] = Form.useForm();
+        const handleSelectChange = (name, value) => {
+            if (name) {
+                setDataPost({
+                    ...dataPost,
+                    [name]: value
+                })
+            }
+        };
+
+        function handleChange(value) {
+            console.log(`selected ${value}`);
+            setDataPost({...dataPost, tags: value}, () => {
+            })
+            console.log(dataPost)
+        }
+
+        const [dataPost, setDataPost] = useState({
+            title: post.title,
+            content: post.content,
+            tags: defaultTags,
+            category_id: post.category.id
         });
-    }
 
-    const showModal = () => {
-        setModall({...modall, isModalVisible: true});
-    };
+        const onEditorChange = (evt) => {
+            setDataPost({
+                ...dataPost,
+                content: evt.editor.getData()
+            });
+        };
+        const onFinish = () => {
+            const bodyFormData = new FormData();
+            dataPost.tags.forEach((item) => {
+                bodyFormData.append('tags', item);
+            });
+            bodyFormData.append("hash_id", file.hashId)
+            bodyFormData.append("content", dataPost.content)
+            bodyFormData.append("title", dataPost.title)
+            bodyFormData.append("category_id", dataPost.category_id)
+            console.log(bodyFormData)
+            postsApi.editPost(post.id,bodyFormData).then(res => {
+                console.log(res);
+                noteEdit();
+                // return <Redirect from={"/"} to={"/posts"}/>
+                // form.resetFields()
+                window.location.reload()
+            }).catch(err => danger())
+        }
 
-    const handleOk = () => {
-        setModall({...modall, isModalVisible: false});
-    };
+        return (
+            <div className="fitness-area m-0 p-0">
+                <div className="container">
+                    <div className="ft-slider-area mt-2">
+                        <div className="ft-slider-item">
+                            {post.headAttachment && post.headAttachment.hashId !== null ?
+                                <img src={getFile + post.headAttachment.hashId} alt="slider image"/> :
+                                <img src={"https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png"}/>}
 
-    const handleCancel = () => {
-        setModall({...modall, isModalVisible: false});
-    };
+                            <div className="ft-slider-text">
+                                {post && <><Link to={'/blog/' + post.id} className="sl-post-cat">{post.category.name}</Link>
+                                    <br/>
+                                    <Link to={'/blog/' + post.id} className="sl-post-title">{post && post.title}</Link></>}
+                                <div className="clearfix"/>
+                                <Row className=" meta-tag-area mt-1">
+                                    <Col span={16} className={"d-flex justify-content-start pr-5 mr-5"}>
+                                        <span><ClockCircleOutlined/>{post && post.createAt}</span>
+                                        <span><HeartOutlined/>{post && post.likesCount !== null ? post.likesCount : 0}</span>
+                                        <span><CommentOutlined/>{post && post.comments !== null ? post.comments.length : 0}</span>
+                                        <span><EyeOutlined/>{post && post.viewsCount}</span>
+                                    </Col>
+                                    <Col span={2} className={"d-flex justify-content-end ml-5 pl-5"}>
+                                        <span onClick={showModal}><EditOutlined/></span>
+                                        <span
+                                            onClick={e => confirm(post && post.id)}><DeleteOutlined></DeleteOutlined></span>
+                                    </Col>
+                                </Row>
+                                <Modal title="Malumotlarni o'zgartirish" visible={modall.isModalVisible}
+                                       onOk={handleOk} onCancel={handleCancel}>
 
-    const {post} = props;
-    return (
-        <div className="fitness-area m-0 p-0">
-            <div className="container">
-                <div className="ft-slider-area mt-2">
-                    <div className="ft-slider-item">
-                        {post.headAttachment && post.headAttachment.hashId !== null ?
-                            <img src={getFile + post.headAttachment.hashId} alt="slider image"/> : <img src={"https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png"}/>}
+                                    <Form
+                                        form={form}
+                                        name="basic"
+                                        layout="vertical"
+                                     >
+                                        <Row gutter={[16]}>
 
-                        <div className="ft-slider-text">
-                            {post && <><Link to={'/blog/' + post.id} className="sl-post-cat">{post.category.name}</Link>
-                                <br/>
-                                <Link to={'/blog/' + post.id} className="sl-post-title">{post && post.title}</Link></>}
-                            <div className="clearfix"></div>
-                            <Row span={12} className=" meta-tag-area mt-1">
-                                <Col className={"d-flex justify-content-start pr-5 mr-5"}>
-                                    <span><ClockCircleOutlined></ClockCircleOutlined>{post && post.createAt}</span>
-                                    <span><HeartOutlined></HeartOutlined>{post && post.likesCount !== null ? post.likesCount : 0}</span>
-                                    <span><CommentOutlined></CommentOutlined>{post && post.comments !== null ? post.comments.length : 0}</span>
-                                    <span><EyeOutlined/>{post && post.viewsCount}</span>
-                                </Col>
-                                <Col span={4} className={"d-flex justify-content-end ml-5 pl-5"}>
-                                    <span onClick={showModal}><EditOutlined></EditOutlined></span>
-                                    <span onClick={confirm}><DeleteOutlined></DeleteOutlined></span>
-                                </Col>
-                            </Row>
-                            <Modal title="Malumotlarni o'zgartirish" visible={modall.isModalVisible}
-                                   onOk={handleOk} onCancel={handleCancel}>
-                                <Form
-                                    name="basic"
-                                    layout="vertical"
-                                >
-                                    <Row gutter={[16]}>
+                                            <Col span={24}>
+                                                <div className={"mt-2 d-flex justify-content-start"}>
+                                                    <Form.Item><Upload
+                                                        maxCount={1}
+                                                        accept=".jpg"
+                                                        {...propsFile}
+                                                    >
+                                                        <Button icon={<UploadOutlined/>}>Post Rasmini yuklash</Button>
+                                                    </Upload></Form.Item>
+                                                </div>
 
-                                        <Col span={24}>
-                                            <Form.Item
-                                                label={"Kategoriyalar"}
-                                                name="blogCategoryName"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: `Kategoriya!`,
-                                                    },
-                                                ]}
-                                            >
-                                                <Select
-                                                    showSearch
-                                                    placeholder={"Blog kategoriylarini tanlang"}
-                                                    // mode="multiple"
-                                                    // onChange={(value) => this.handleSelectChange('blogCategoryId', value)}
+                                                <Form.Item
+                                                    label={"Kategoriyalar"}
+                                                    name="blogCategoryName"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: `Kategoriya!`,
+                                                        },
+                                                    ]}
                                                 >
-                                                    {
-                                                        // Array.isArray(categoryProps) ? categoryProps.map((item, key) => (
-                                                        //     <Option value={item[key]} key={item[key]}>
-                                                        //         {item[key]}
-                                                        //     </Option>
-                                                        // )) : "null"
+                                                    <Select
+                                                        showSearch
+                                                        placeholder={"Blog kategoriylarini tanlang"}
+                                                        defaultValue={post.category.id}
+                                                        onChange={(e) => handleSelectChange('category_id', e)}
+                                                        required
+                                                    >
+                                                        {
+                                                            categories && categories.map((item, key) => (
+                                                                <Option value={item.id} key={item.id}>
+                                                                    {item.name}
+                                                                </Option>
+                                                            ))
+                                                        }
+                                                    </Select>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label={"Tags"}
+                                                    name="blogDate">
+                                                    <Select
+                                                        mode="multiple"
+                                                        allowClear
+                                                        style={{width: '100%'}}
+                                                        showSearch
+                                                        placeholder={"Blog taglarini tanlang"}
+                                                        required
+                                                        defaultValue={defaultTags}
+                                                        onChange={handleChange}
+                                                    >{
+                                                        props.tags_reducer && props.tags_reducer.tags && props.tags_reducer.tags.data.map((item, key) => (
+                                                            <Option value={item.id} key={item.id}>
+                                                                {item.tag}
+                                                            </Option>
+                                                        ))
                                                     }
-                                                </Select>
-                                            </Form.Item>
-                                            <Form.Item
-                                                label={"Qisqa Xabar matnini kirgizing"}
-                                                name="title"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: `Mavzu nomi!`,
-                                                    },
-                                                ]}
-                                            >
-                                                <Input
-                                                    placeholder={"Mavzu "}
-                                                    name="blogTitleRu"
-                                                    // onChange={this.handleInputChange}
-                                                />
-                                            </Form.Item>
+                                                    </Select>
+                                                </Form.Item>
 
 
-                                        </Col>
-                                    </Row>
-                                </Form>
-                            </Modal>
+                                                <Form.Item
+                                                    label={"Post mavzusi"}
+                                                    name="title1"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: `Mavzu nomi!`,
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Input
+                                                        placeholder={"Mavzu"}
+                                                        name="blogTitleRu"
+                                                        defaultValue={post.title}
+                                                        onChange={e => setDataPost({
+                                                            ...dataPost,
+                                                            title: e.target.value
+                                                        })}
+                                                        required
+                                                    />
+                                                </Form.Item>
 
+                                                <Form.Item
+                                                    label={"Content"}
+                                                    name="content"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: `Content!`,
+                                                        },
+                                                    ]}
+                                                >
+                                                    <CKEditor
+                                                        data={post.content}
+                                                        onChange={onEditorChange}
+                                                        type="classic"
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+
+
+                                    </Form>
+                                </Modal>
+                                <ToastContainer autoClose={3000}/>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
-        ;
-};
+        )
+            ;
+    }
+;
 
-export default CardItem;
+const mstp = (state) => (state)
+
+
+export default connect(mstp, null)(CardItem);

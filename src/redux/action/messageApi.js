@@ -1,7 +1,7 @@
-import {axiosInstance} from "../../server/host";
+import {axiosInstance, axiosInstanceAdmin, headers, host} from "../../server/host";
 
 export function getMessage() {
-    const req = axiosInstance.get("/message/all")
+    const req = axiosInstanceAdmin.get(`${host}/message/all`,{headers})
         .then(res => res.data);
 
     return {

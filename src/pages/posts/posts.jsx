@@ -10,7 +10,7 @@ const Posts = (props) => {
 
     useEffect(() => {
     props.getCategories()
-    });
+    },[]);
 
     const category = props.category_reducer.categories;
     console.log(category);
