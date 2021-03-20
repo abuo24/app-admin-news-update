@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {tagsApi} from "../../../redux/service/tagsApi";
 import {toast, ToastContainer} from "react-toastify";
 import {Button, Col, Form, Input, Row} from "antd";
-import CategoryTable from "../categoryTable";
 import TagsTable from "./tagsTable";
 import {bindActionCreators} from "redux";
 import {getCategories} from "../../../redux/action/posts";
@@ -11,7 +10,8 @@ import {connect} from "react-redux";
 
 const NewCategoryTags = (props) => {
     const [data, setData] = useState({
-        tag: ""
+        tagUz: "",
+        tagRu: ""
     });
 
     const onFinish = () => {
@@ -42,7 +42,7 @@ const NewCategoryTags = (props) => {
             >
                 <Form.Item
                     label={"Tag nomi"}
-                    name="title"
+                    name="titleUz"
                     rules={[
                         {
                             required: true,
@@ -52,8 +52,24 @@ const NewCategoryTags = (props) => {
                 >
                     <Input
                         placeholder={"Mavzu "}
-                        name="blogTitleRu"
-                        onChange={e => setData({...data, tag: e.target.value})}
+                        name="titleUz"
+                        onChange={e => setData({...data, tagUz: e.target.value})}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={"Название тэга"}
+                    name="titleRu"
+                    rules={[
+                        {
+                            required: true,
+                            message: `Название тэга!`,
+                        },
+                    ]}
+                >
+                    <Input
+                        placeholder={"Название тэга"}
+                        name="titleRu"
+                        onChange={e => setData({...data, tagRu: e.target.value})}
                     />
                 </Form.Item>
 

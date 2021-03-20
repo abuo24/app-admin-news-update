@@ -3,7 +3,8 @@ import {axiosInstanceAdmin, host} from "../../server/host";
 export const categoriesApi = {
     add: data => {
         return axiosInstanceAdmin.post(`${host}/admin/categori/add`, {
-            name: data.name,
+            nameUz: data.nameUz,
+            nameRu: data.nameRu
         })
     },
     delete: (id, category) => {
@@ -11,7 +12,8 @@ export const categoriesApi = {
     },
     edit: (id,data) => {
         return axiosInstanceAdmin.put(`${host}/admin/categori/${id}`, {
-            name: data.name,
+            nameUz: data.nameUz,
+            nameRu: data.nameRu
         })
     }
 

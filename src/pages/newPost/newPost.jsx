@@ -12,10 +12,12 @@ import {postsApi} from "../../redux/service/postsApi";
 const NewPost = (props) => {
 
     const [dataPost, setDataPost] = useState({
-        title: "",
-        content: ""
+        titleUz: "",
+        titleRu: "",
+        contentUz: "",
+        contentRu: ""
     })
-    const test = new FormData()
+    const test = new FormData();
 
     const propsData = {
             beforeUpload: file => {
@@ -34,7 +36,7 @@ const NewPost = (props) => {
                 console.log(options)
                 test.append('file', options.file)
                 postsApi.addImg(test).then(res => {
-                    setFile({file: res.data.data})
+                        setFile({file: res.data.data})
                         options.onSuccess(res.data, options.file);
                         console.log(res)
                     }
@@ -47,7 +49,8 @@ const NewPost = (props) => {
     const [toggle, setToggle] = useState(false);
     const [data, setData] = useState({
         category: "",
-        title: ""
+        titleUz: "",
+        titleRu: ""
     });
 
     const onClickToogle = (e) => {
@@ -79,8 +82,10 @@ const NewPost = (props) => {
                 bodyFormData.append('tags', item);
             });
             bodyFormData.append("hash_id", file.file)
-            bodyFormData.append("content", dataPost.content)
-            bodyFormData.append("title", dataPost.title)
+            bodyFormData.append("contentUz", dataPost.contentUz)
+            bodyFormData.append("contentRu", dataPost.contentRu)
+            bodyFormData.append("titleUz", dataPost.titleUz)
+            bodyFormData.append("titleRu", dataPost.titleRu)
             bodyFormData.append("category_id", data.category)
             console.log(bodyFormData.keys())
             console.log(bodyFormData.values())
@@ -126,10 +131,17 @@ const NewPost = (props) => {
         }
     };
 
-    const onEditorChange = (evt) => {
+    const onEditorChangeUz = (evt) => {
         setDataPost({
             ...dataPost,
-            content: evt.editor.getData()
+            contentUz: evt.editor.getData()
+        });
+    };
+
+    const onEditorChangeRu = (evt) => {
+        setDataPost({
+            ...dataPost,
+            contentRu: evt.editor.getData()
         });
     };
 
@@ -138,7 +150,7 @@ const NewPost = (props) => {
     console.log(dataPost);
 
     return (
-        <div className="App ">
+        <div className="App">
             <div className="d-flex justify-content-start">
                 <Button
                     type={!toggle ? "primary" : ""}
@@ -158,19 +170,19 @@ const NewPost = (props) => {
                     <Col span={24}>
                         {!toggle && <div className={"mt-2 d-flex justify-content-start"}>
                             <Form.Item><Upload
-                            maxCount={1}
+                                maxCount={1}
 
-                            id="for_clear"
-                            {...propsData}
-                            accept=".jpg"
-                            listType={"picture"}>
-                            <Button icon={<UploadOutlined/>}>Post Rasmini yuklash</Button>
-                        </Upload></Form.Item>
+                                id="for_clear"
+                                {...propsData}
+                                accept=".jpg"
+                                listType={"picture"}>
+                                <Button icon={<UploadOutlined/>}>Post Rasmini yuklash</Button>
+                            </Upload></Form.Item>
                         </div>
                         }
                         <Form.Item
                             label={"Kategoriyalar"}
-                            name="blogCategoryName"
+                            name="categoryUz"
                             rules={[
                                 {
                                     required: true,
@@ -189,7 +201,7 @@ const NewPost = (props) => {
                                 {
                                     props.category_reducer && props.category_reducer.categories && props.category_reducer.categories.map((item, key) => (
                                         <Option value={item.id} key={item}>
-                                            {item.name}
+                                            {props.langReducer.type=="uz"?item.nameUz:item.nameRu}
                                         </Option>
                                     ))
                                 }
@@ -197,7 +209,7 @@ const NewPost = (props) => {
                         </Form.Item>
                         {!toggle && <Form.Item
                             label={"Tags"}
-                            name="blogDate">
+                            name="tagsA;;">
                             <Select
                                 mode="multiple"
                                 allowClear
@@ -209,16 +221,17 @@ const NewPost = (props) => {
                             >{
                                 props.tags_reducer && props.tags_reducer.tags && props.tags_reducer.tags.data.map((item, key) => (
                                     <Option value={item.id} key={item.id}>
-                                        {item.tag}
+
+                                        {props.langReducer.type=="uz"?item.tagUz:item.tagRu}
                                     </Option>
                                 ))
                             }
                             </Select>
                         </Form.Item>
                         }
-                        {toggle && <Form.Item
+                        {toggle &&<> <Form.Item
                             label={"Qisqa Xabar matnini kirgizing"}
-                            name="title"
+                            name="titleUz"
                             rules={[
                                 {
                                     required: true,
@@ -230,15 +243,32 @@ const NewPost = (props) => {
                             <Input
                                 placeholder={"Mavzu "}
                                 id="for_clear"
-                                name="blogTitleRu"
-                                required onChange={e => setData({...data, title: e.target.value})}
+                                name="titleUz"
+                                required onChange={e => setData({...data, titleUz: e.target.value})}
                                 value={data.title}
                             />
-                        </Form.Item>
+                        </Form.Item><Form.Item
+                            label={"Введите текст короткого сообщения"}
+                            name="titleRu"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: `please required!`,
+                                },
+                            ]}
+                        >
+                            <Input
+                                placeholder={"Mavzu "}
+                                id="for_clear"
+                                name="titleRu"
+                                required onChange={e => setData({...data, titleRu: e.target.value})}
+                                value={data.title}
+                            />
+                        </Form.Item></>
                         }
-                        {!toggle && <Form.Item
+                        {!toggle && <> <Form.Item
                             label={"Post mavzusi"}
-                            name="title1"
+                            name="title1Uz"
                             rules={[
                                 {
                                     required: true,
@@ -248,32 +278,68 @@ const NewPost = (props) => {
                         >
                             <Input
                                 placeholder={"Mavzu"}
-                                name="blogTitleRu"
+                                name="title1Uz"
                                 onChange={e => setDataPost({
                                     ...dataPost,
-                                    title: e.target.value
+                                    titleUz: e.target.value
                                 })}
                                 required
                             />
-                        </Form.Item>
-                        }
-                        {!toggle &&
-                        <Form.Item
-                            label={"Content"}
-                            name="content"
+                        </Form.Item><Form.Item
+                            label={"Тема Пост"}
+                            name="title1Ru"
                             rules={[
                                 {
                                     required: true,
-                                    message: `Content!`,
-                                },
+                                    message: `please required`,
+                                }
                             ]}
                         >
-                            <CKEditor
-                                data="<i>Contentni chiroyli ko'rinishda yozing</i>"
-                                onChange={onEditorChange}
-                                type="classic"
+                            <Input
+                                placeholder={"Тема"}
+                                name="title1Ru"
+                                onChange={e => setDataPost({
+                                    ...dataPost,
+                                    titleRu: e.target.value
+                                })}
+                                required
                             />
-                        </Form.Item>
+                        </Form.Item></>
+                        }
+                        {!toggle && <>
+                            <Form.Item
+                                label={"Content"}
+                                name="content1"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: `Content!`,
+                                    },
+                                ]}
+                            >
+                                <CKEditor
+                                    data="<i>Contentni chiroyli ko'rinishda yozing uzbek tilida</i>"
+                                    onChange={onEditorChangeUz}
+                                    type="classic"
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label={"Содержание"}
+                                name="content2"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: `Content!`,
+                                    },
+                                ]}
+                            >
+                                <CKEditor
+                                    data="<i>Пишите контент красиво на русском языке </i>"
+                                    onChange={onEditorChangeRu}
+                                    type="classic"
+                                />
+                            </Form.Item>
+                        </>
                         }
                     </Col>
                 </Row>

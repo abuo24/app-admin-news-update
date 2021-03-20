@@ -8,6 +8,7 @@ import tags_reducer from "./tags_reducer";
 import message_reducer from "./message_reducer";
 import auth_reducer from "./auth_reducer";
 import toggle_reducer from "./toggle_reducer";
+import langReducer from "./langReducer";
 
 const rootReducer = combineReducers({
     post_reducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     tags_reducer,
     message_reducer,
     auth_reducer,
-    toggle_reducer
+    toggle_reducer,
+    langReducer
 });
 export default rootReducer;

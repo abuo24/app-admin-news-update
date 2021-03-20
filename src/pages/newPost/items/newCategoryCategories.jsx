@@ -11,7 +11,8 @@ import {connect} from "react-redux";
 const NewCategoryCategories = (props) => {
 
     const [data, setData] = useState({
-        name: ""
+        nameUz: "",
+        nameRu: ""
     });
 
     const onFinish = () => {
@@ -44,7 +45,7 @@ const NewCategoryCategories = (props) => {
                     <Col span={24}>
                         <Form.Item
                             label={"Kategoriya nomini kiriting"}
-                            name="title"
+                            name="titleUz"
                             rules={[
                                 {
                                     required: true,
@@ -54,8 +55,25 @@ const NewCategoryCategories = (props) => {
                         >
                             <Input
                                 placeholder={"Kategoriya nomi"}
-                                onChange={e => setData({
-                                    name: e.target.value
+                                onChange={e => setData({...data,
+                                    nameUz: e.target.value
+                                })}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            label={"Введите название категории"}
+                            name="titleRu"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: `Введите название категории!`,
+                                },
+                            ]}
+                        >
+                            <Input
+                                placeholder={"Название категории"}
+                                onChange={e => setData({...data,
+                                    nameRu: e.target.value
                                 })}
                             />
                         </Form.Item>

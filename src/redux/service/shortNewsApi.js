@@ -6,7 +6,8 @@ export const shortNewsApi = {
     add: data => {
         return axiosInstanceAdmin.post(`${host}/admin/shortnews/add`, {
             category_id: data.category,
-            title: data.title
+            titleUz: data.titleUz,
+            titleRu: data.titleRu
         })
     },
     delete: (id) => {
@@ -15,7 +16,8 @@ export const shortNewsApi = {
     edit: (id,data) => {
         return axiosInstanceAdmin.put(`${host}/admin/shortnews/${id}`, {
             category_id: data.category_id,
-            title: data.title
+            titleUz: data.titleUz,
+            titleRu: data.titleRu
         })
     }
 

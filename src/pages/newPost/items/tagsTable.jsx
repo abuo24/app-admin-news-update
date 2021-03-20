@@ -12,8 +12,12 @@ class TagsTable extends Component {
         super(props);
         this.columns = [
             {
-                title: 'Tags',
-                dataIndex: 'tag',
+                title: 'TagsUz',
+                dataIndex: 'tagUz',
+                width: '30%',
+            }, {
+                title: 'TagsRu',
+                dataIndex: 'tagRu',
                 width: '30%',
             },
             {
@@ -60,7 +64,6 @@ class TagsTable extends Component {
         return (
             <div>
                 <Table
-
                     size={"small"}
                     bordered
                     columns={columns}

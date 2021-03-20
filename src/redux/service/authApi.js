@@ -11,5 +11,4 @@ export const authApi = {
     resetPassword: data => {
         return axiosInstanceAdmin.put(`/reset`, data)
     }
-
 };

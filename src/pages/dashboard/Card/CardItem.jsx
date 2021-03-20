@@ -55,7 +55,7 @@ const CardItem = (props) => {
         };
 
         const handleOk = () => {
-           onFinish()
+            onFinish()
         };
 
         const handleCancel = () => {
@@ -68,10 +68,10 @@ const CardItem = (props) => {
         post && post.tags.map(item => (
             defaultTags.push(item.id)
         ))
-    console.log(post)
-    const [file, setFile] = useState({
-        hashId: post.headAttachment!=null?( getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId):''
-    });
+        console.log(post)
+        const [file, setFile] = useState({
+            hashId: post.headAttachment != null ? (getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId) : ''
+        });
 
         const test = new FormData()
 
@@ -82,15 +82,15 @@ const CardItem = (props) => {
                     console.log(file, fileList);
                 }
             },
-            defaultFileList: [post.headAttachment!=null?
+            defaultFileList: [post.headAttachment != null ?
                 {
-                    uid: `${post.headAttachment&&post.headAttachment.id&&post.headAttachment.id}`,
+                    uid: `${post.headAttachment && post.headAttachment.id && post.headAttachment.id}`,
                     name: `${post.headAttachment && post.headAttachment.name && post.headAttachment.name}`,
                     // status: 'done',
                     // response: 'Server Error 500',
                     url: `${getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId}`,
-                    thumbUrl: `${getFile+post.headAttachment&&post.headAttachment.hashId&&post.headAttachment.hashId}`,
-                }:''
+                    thumbUrl: `${getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId}`,
+                } : ''
             ],
             customRequest: (options) => {
                 test.append('file', options.file)
@@ -121,8 +121,10 @@ const CardItem = (props) => {
         }
 
         const [dataPost, setDataPost] = useState({
-            title: post.title,
-            content: post.content,
+            titleUz: post.titleUz,
+            titleRu: post.titleRu,
+            contentUz: post.contentUz,
+            contentRu: post.contentRu,
             tags: defaultTags,
             category_id: post.category.id
         });
@@ -130,7 +132,13 @@ const CardItem = (props) => {
         const onEditorChange = (evt) => {
             setDataPost({
                 ...dataPost,
-                content: evt.editor.getData()
+                contentUz: evt.editor.getData()
+            });
+        };
+        const onEditorChange1 = (evt) => {
+            setDataPost({
+                ...dataPost,
+                contentRu: evt.editor.getData()
             });
         };
         const onFinish = () => {
@@ -139,11 +147,13 @@ const CardItem = (props) => {
                 bodyFormData.append('tags', item);
             });
             bodyFormData.append("hash_id", file.hashId)
-            bodyFormData.append("content", dataPost.content)
-            bodyFormData.append("title", dataPost.title)
+            bodyFormData.append("contentUz", dataPost.contentUz)
+            bodyFormData.append("contentRu", dataPost.contentRu)
+            bodyFormData.append("titleUz", dataPost.titleUz)
+            bodyFormData.append("titleRu", dataPost.titleRu)
             bodyFormData.append("category_id", dataPost.category_id)
             console.log(bodyFormData)
-            postsApi.editPost(post.id,bodyFormData).then(res => {
+            postsApi.editPost(post.id, bodyFormData).then(res => {
                 console.log(res);
                 noteEdit();
                 // return <Redirect from={"/"} to={"/posts"}/>
@@ -151,6 +161,9 @@ const CardItem = (props) => {
                 window.location.reload()
             }).catch(err => danger())
         }
+        const {type} = props.langReducer;
+
+        const [lang, setLang] = useState(type == "uz" ? true : false);
 
         return (
             <div className="fitness-area m-0 p-0">
@@ -162,9 +175,11 @@ const CardItem = (props) => {
                                 <img src={"https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png"}/>}
 
                             <div className="ft-slider-text">
-                                {post && <><Link to={'/blog/' + post.id} className="sl-post-cat">{post.category.name}</Link>
+                                {post && <><Link to={'/blog/' + post.id}
+                                                 className="sl-post-cat">{lang ? post.category.nameUz : post.category.nameRu}</Link>
                                     <br/>
-                                    <Link to={'/blog/' + post.id} className="sl-post-title">{post && post.title}</Link></>}
+                                    <Link to={'/blog/' + post.id}
+                                          className="sl-post-title">{post && lang ? post.titleUz : post.titleRu}</Link></>}
                                 <div className="clearfix"/>
                                 <Row className=" meta-tag-area mt-1">
                                     <Col span={16} className={"d-flex justify-content-start pr-5 mr-5"}>
@@ -181,12 +196,11 @@ const CardItem = (props) => {
                                 </Row>
                                 <Modal title="Malumotlarni o'zgartirish" visible={modall.isModalVisible}
                                        onOk={handleOk} onCancel={handleCancel}>
-
                                     <Form
                                         form={form}
                                         name="basic"
                                         layout="vertical"
-                                     >
+                                    >
                                         <Row gutter={[16]}>
 
                                             <Col span={24}>
@@ -220,7 +234,7 @@ const CardItem = (props) => {
                                                         {
                                                             categories && categories.map((item, key) => (
                                                                 <Option value={item.id} key={item.id}>
-                                                                    {item.name}
+                                                                    {type ? item.nameUz : item.nameRu}
                                                                 </Option>
                                                             ))
                                                         }
@@ -241,7 +255,7 @@ const CardItem = (props) => {
                                                     >{
                                                         props.tags_reducer && props.tags_reducer.tags && props.tags_reducer.tags.data.map((item, key) => (
                                                             <Option value={item.id} key={item.id}>
-                                                                {item.tag}
+                                                                {type ? item.tagUz : item.tagRu}
                                                             </Option>
                                                         ))
                                                     }
@@ -261,11 +275,33 @@ const CardItem = (props) => {
                                                 >
                                                     <Input
                                                         placeholder={"Mavzu"}
-                                                        name="blogTitleRu"
-                                                        defaultValue={post.title}
+                                                        name="title1"
+                                                        defaultValue={post.titleUz}
                                                         onChange={e => setDataPost({
                                                             ...dataPost,
-                                                            title: e.target.value
+                                                            titleUz: e.target.value
+                                                        })}
+                                                        required
+                                                    />
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    label={"Тема Пост"}
+                                                    name="title2"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: `Mavzu nomi!`,
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Input
+                                                        placeholder={"Mavzu"}
+                                                        name="title2"
+                                                        defaultValue={post.titleRu}
+                                                        onChange={e => setDataPost({
+                                                            ...dataPost,
+                                                            titleRu: e.target.value
                                                         })}
                                                         required
                                                     />
@@ -273,17 +309,33 @@ const CardItem = (props) => {
 
                                                 <Form.Item
                                                     label={"Content"}
-                                                    name="content"
+                                                    name="contentUz"
                                                     rules={[
                                                         {
                                                             required: true,
                                                             message: `Content!`,
-                                                        },
+                                                        }
                                                     ]}
                                                 >
                                                     <CKEditor
-                                                        data={post.content}
+                                                        data={post.contentUz}
                                                         onChange={onEditorChange}
+                                                        type="classic"
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label={"Содержание"}
+                                                    name="contentRu"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: `Content!`,
+                                                        }
+                                                    ]}
+                                                >
+                                                    <CKEditor
+                                                        data={post.contentRu}
+                                                        onChange={onEditorChange1}
                                                         type="classic"
                                                     />
                                                 </Form.Item>

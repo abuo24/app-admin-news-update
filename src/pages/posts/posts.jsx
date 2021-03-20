@@ -9,8 +9,8 @@ import {connect} from "react-redux";
 const Posts = (props) => {
 
     useEffect(() => {
-    props.getCategories()
-    },[]);
+        props.getCategories()
+    }, []);
 
     const category = props.category_reducer.categories;
     console.log(category);
@@ -18,7 +18,7 @@ const Posts = (props) => {
     // const getPosts = posts.map((item, key) => (<CategoryPost postList={item.posts} key={key} title={item.categoryTitle}/>));
 
     const categoryList = category && category.map((item) => (
-        <CategoryPost id={item.id} key={item.id} title={item.name}/>));
+        <CategoryPost id={item.id} key={item.id} title={props.langReducer.type=="uz"?item.nameUz:item.nameRu}/>));
 
     return (<div>
         {categoryList}

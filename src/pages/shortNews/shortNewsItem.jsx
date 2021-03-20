@@ -1,13 +1,10 @@
 import React from 'react';
-import {Skeleton, Switch, Card, Modal, Form, Row, Col, Upload, Button, Select, Input} from 'antd';
-import {EditOutlined, EllipsisOutlined, SettingOutlined} from '@ant-design/icons';
+import {Skeleton, Card, Modal, Form, Row, Col, Upload, Button, Select, Input} from 'antd';
+import {EditOutlined} from '@ant-design/icons';
 import {RiDeleteBinLine} from "react-icons/all";
-import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
 import {Option} from "antd/lib/mentions";
-import CKEditor from "ckeditor4-react";
 import ExclamationCircleOutlined from "@ant-design/icons/lib/icons/ExclamationCircleOutlined";
 import {shortNewsApi} from "../../redux/service/shortNewsApi";
-import {Redirect} from "react-router-dom";
 import {ToastContainer, toast} from "react-toastify";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -21,7 +18,8 @@ class ShortNewsItem extends React.Component {
         isModalVisible: false,
         category: "",
         category_id: this.props.post.category.id,
-        title: ""
+        titleUz: this.props.post.titleUz,
+        titleRu: this.props.post.titleRu
     };
     componentDidMount() {
         if (this.props.post != null) {
@@ -42,7 +40,7 @@ class ShortNewsItem extends React.Component {
 
     render() {
         const noteEdit = () => toast.info("O'zgartirildi");
-
+        const {type} = this.props.langReducer;
         const note = () => toast.info("O'chirildi");
         const dark = () => toast.error("Xatolik");
         const showModal = () => {
@@ -97,8 +95,8 @@ class ShortNewsItem extends React.Component {
             >
                 <Skeleton loading={this.state.loading} avatar active>
                     <Meta
-                        title={this.props.post.category.name}
-                        description={this.props.post.title}
+                        title={type=="uz"?this.props.post.category.nameUz:this.props.post.category.nameRu}
+                        description={type=="uz"?this.props.post.titleUz:this.props.post.titleRu}
 
                     />
                     <Modal title="Malumotlarni o'zgartirish" visible={this.state.isModalVisible}
@@ -128,7 +126,7 @@ class ShortNewsItem extends React.Component {
                                         > {
                                             this.props.category_reducer && this.props.category_reducer.categories.map((item, key) => (
                                                 <Option value={item.id} key={item.id}>
-                                                    {item.name}
+                                                    {type=="uz"?item.nameUz:item.nameRu}
                                                 </Option>
                                             ))
                                         }
@@ -136,7 +134,7 @@ class ShortNewsItem extends React.Component {
                                     </Form.Item>
                                     <Form.Item
                                         label={"Qisqa Xabar matnini kirgizing"}
-                                        name="title"
+                                        name="titleUz"
                                         rules={[
                                             {
                                                 required: true,
@@ -146,11 +144,31 @@ class ShortNewsItem extends React.Component {
                                     >
                                         <Input
                                             placeholder={"Mavzu "}
-                                            name="blogTitleRu"
-                                            defaultValue={this.props.post.title}
+                                            name="titleUz"
+                                            defaultValue={this.props.post.titleUz}
                                             onChange={e=>this.setState({
                                                 ...this.state,
-                                                title: e.target.value
+                                                titleUz: e.target.value
+                                            })}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label={"Введите текст короткого сообщения"}
+                                        name="titleRu"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: `Mavzu nomi!`,
+                                            },
+                                        ]}
+                                    >
+                                        <Input
+                                            placeholder={"Mavzu "}
+                                            name="titleRu"
+                                            defaultValue={this.props.post.titleRu}
+                                            onChange={e=>this.setState({
+                                                ...this.state,
+                                                titleRu: e.target.value
                                             })}
                                         />
                                     </Form.Item>

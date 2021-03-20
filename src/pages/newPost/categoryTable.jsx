@@ -128,8 +128,13 @@ class CategoryTable extends React.Component {
     constructor(props) {
         super(props);
         this.columns = [{
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'NameUz',
+            dataIndex: 'nameUz',
+            width: '30%',
+            editable: true,
+        },{
+            title: 'NameRu',
+            dataIndex: 'nameRu',
             width: '30%',
             editable: true,
         },
@@ -262,14 +267,13 @@ class CategoryTable extends React.Component {
                                         this.props && this.props.category_reducer && this.props.category_reducer.categories && this.props.category_reducer.categories.map((item, key) => {
                                             if (this.asss === item.id) {
                                                 return <Option disabled={true} value={item.id} key={item.id}>
-                                                    {item.name}
+                                                    {this.props.langReducer.type=="uz"?item.nameUz:item.nameRu}
                                                 </Option>
 
                                             } else {
                                                 return <Option value={item.id} key={item.id}>
-                                                    {item.name}
+                                                    {this.props.langReducer.type=="uz"?item.nameUz:item.nameRu}
                                                 </Option>
-
                                             }
                                         })
                                     }
