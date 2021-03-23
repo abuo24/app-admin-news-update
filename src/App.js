@@ -1,16 +1,12 @@
 import './App.css';
-import React, {Component, useEffect, useState} from "react";
-import {Redirect, Route} from "react-router-dom";
-import {Switch} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {LayoutPage} from "./hoc";
-import {Dashboard, Login, NewPost, Post, Posts, Profile} from "./pages";
+import {Dashboard, Login, Message, NewCategory, NewPost, Post, Posts, Profile, ShortNews, Video} from "./pages";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {getCategories, getNewsByViewsCount} from "./redux/action/posts";
 import 'react-toastify/dist/ReactToastify.css';
-import ShortNews from "./pages/shortNews/shortNews";
-import NewCategory from "./pages/newCategory/newCategory";
-import Message from "./pages/message/message";
 import {getMe, getMeByToken} from "./redux/action/authApis";
 import {getTags} from "./redux/action/tagsApi";
 import {getMessage} from "./redux/action/messageApi";
@@ -19,18 +15,15 @@ const App = (props) => {
 
     const [isLogged, setIsLogged] = useState(false);
 
-    const headers = {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-    };
-
     console.log(props);
     console.log(localStorage.getItem("token"));
     useEffect(() => {
         if (localStorage.getItem("token")) {
             setIsLogged(true);
             props.getMe().then().catch(
-                err=>{localStorage.removeItem("token")
-                window.location.reload()
+                err => {
+                    localStorage.removeItem("token")
+                    window.location.reload()
                 }
             );
             props.getNewsByViewsCount();
@@ -43,7 +36,6 @@ const App = (props) => {
             setIsLogged(false)
         }
     }, []);
-
 
     if (!isLogged) {
         return (
@@ -69,6 +61,7 @@ const App = (props) => {
                     <Route exact path={"/newpost"} component={NewPost}/>
                     <Route exact path={"/newcategori"} component={NewCategory}/>
                     <Route exact path={"/message"} component={Message}/>
+                    <Route exact path={"/video"} component={Video}/>
                     {/*<Redirect from="/" to={"/dashboard"}/>*/}
 
                 </LayoutPage>

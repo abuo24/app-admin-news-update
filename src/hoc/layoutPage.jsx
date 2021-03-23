@@ -18,7 +18,7 @@ import BookTwoTone from "@ant-design/icons/lib/icons/BookTwoTone";
 import BookOutlined from "@ant-design/icons/lib/icons/BookOutlined";
 import {connect} from "react-redux";
 import userActions from "../redux/action/userActions";
-import {BiMessageSquareDetail, BsFileEarmarkArrowUp, BsFilePost} from "react-icons/all";
+import {AiOutlineVideoCameraAdd, BiMessageSquareDetail, BsFileEarmarkArrowUp, BsFilePost} from "react-icons/all";
 
 const LayoutPage = (props) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -62,10 +62,14 @@ const LayoutPage = (props) => {
                         <Menu.Item key="sub2" icon={<BookOutlined/>}>
                             <NavLink to={"/shortnews"}>Qisqa Xabarlar</NavLink>
                         </Menu.Item>
+
+                        <Menu.Item key="sub7" icon={<AiOutlineVideoCameraAdd/>}>
+                            <NavLink to={"/video"}>Video qo'shish</NavLink>
+                        </Menu.Item>
                         <Menu.Item key="sub3" icon={<BsFileEarmarkArrowUp/>}>
                             <NavLink to={"/newpost"}>Yangi post qo'shish</NavLink>
                         </Menu.Item>
-                        <Menu.Item key="sub7" icon={<FileAddFilled/>}>
+                        <Menu.Item key="sub4454" icon={<FileAddFilled/>}>
                             <NavLink to={"/newcategori"}>Yangi Kategoriya +</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub6" icon={<BiMessageSquareDetail/>}>
