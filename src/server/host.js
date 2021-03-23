@@ -10,7 +10,7 @@ export let headers = {
 
 export let axiosInstance = axios.create({
     baseURL: `${host}`,
-    timeout: 30000
+    timeout: 100000
 });
 
 export let axiosInstanceAdmin = axios.create({
