@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export  let  host ="http://localhost:8080/api";
+export  let  host ="https://news-update-backend.herokuapp.com/api";
 
-export  let  getFile ="http://localhost:8080/api/files/preview/";
+export  let  getFile ="https://news-update-backend.herokuapp.com/api/files/preview/";
 
 export let headers = {
     'Authorization': localStorage.getItem("token") === null ? "" : ('Bearer ' + localStorage.getItem("token"))

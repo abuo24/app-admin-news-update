@@ -56,7 +56,6 @@ const App = (props) => {
                     <Route exact path={"/blog/:id"} component={Post}/>
                     <Route exact path={"/posts"} component={Posts}/>
                     <Route exact path={"/profile"} component={Profile}/>
-                    <Route exact path={"/login"} component={Login}/>
                     <Route exact path={"/shortnews"} component={ShortNews}/>
                     <Route exact path={"/newpost"} component={NewPost}/>
                     <Route exact path={"/newcategori"} component={NewCategory}/>
