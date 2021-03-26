@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {getMe, getMeByToken} from "./redux/action/authApis";
 import {getTags} from "./redux/action/tagsApi";
 import {getMessage} from "./redux/action/messageApi";
+import {getVideos} from "./redux/action/videosApi";
 
 const App = (props) => {
 
@@ -30,7 +31,8 @@ const App = (props) => {
             props.getCategories();
             props.getTags();
             props.getMessage();
-            props.getMe();
+            props.getMe();  props.getVideos()
+
 
         } else {
             setIsLogged(false)
@@ -77,7 +79,8 @@ const mdtp = (dispatch) => (bindActionCreators({
     getNewsByViewsCount,
     getCategories,
     getTags,
-    getMessage
+    getMessage,
+    getVideos
 }, dispatch));
 
 export default connect(mstp, mdtp)(App);

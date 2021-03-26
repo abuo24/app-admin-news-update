@@ -52,8 +52,8 @@ const Cards = (props) => {
     if (postList&&postList.posts&&postList.posts.length>0){
         return (
             <div>
-                <Row style={{margin: +"10px 0"}}>
-                    <Col>
+                <div style={{margin: +"10px 0"}}>
+                    <div>
                         <div className="section-top-bar">
                             <h4>{props.title}</h4>
                         </div>
@@ -73,8 +73,8 @@ const Cards = (props) => {
                             />:""
                         }
 
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
         )}
     else {return ""}

@@ -9,6 +9,7 @@ import message_reducer from "./message_reducer";
 import auth_reducer from "./auth_reducer";
 import toggle_reducer from "./toggle_reducer";
 import langReducer from "./langReducer";
+import videos_reducer from "./videos_reducer";
 
 const rootReducer = combineReducers({
     post_reducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     message_reducer,
     auth_reducer,
     toggle_reducer,
-    langReducer
+    langReducer,
+    videos_reducer
 });
 export default rootReducer;

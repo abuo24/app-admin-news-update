@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, Comment, Form, Input, Modal, Row, Select, Skeleton, Upload} from "antd";
-import {Link, NavLink, Redirect} from "react-router-dom";
+import {Button, Col, Form, Input, Modal, Row, Select, Upload} from "antd";
+import {Link} from "react-router-dom";
 import "./Card.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {ClockCircleOutlined, CommentOutlined, EyeOutlined} from "@ant-design/icons";
@@ -15,9 +15,6 @@ import {connect} from "react-redux";
 import {Option} from "antd/lib/mentions";
 import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
 import CKEditor from "ckeditor4-react";
-import {shortNewsApi} from "../../../redux/service/shortNewsApi";
-import CategoryPost from "../../category/categoryPost";
-
 
 const CardItem = (props) => {
         const [modall, setModall] = useState({

@@ -34,7 +34,7 @@ const CategoryPost = (props) => {
     },[]);
 
     console.log(postList&&postList.posts)
-    const getPosts = postList&&postList.posts.map((item, key) => (<Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+    const getPosts = postList&&postList.posts.map((item, key) => (<Col span={12}><CardItem post={item} key={item.id}/></Col>));
 
     const {data, current, minIndex, maxIndex, pageSize} = paginationList;
     const handleChange = (page) => {
@@ -51,8 +51,8 @@ const CategoryPost = (props) => {
     if (postList&&postList.posts&&postList.posts.length>0){
     return (
         <div>
-            <Row style={{margin: +"10px 0"}}>
-                <Col>
+            <div style={{margin: +"10px 0"}}>
+                <div>
                     <div className="section-top-bar">
                         <h4>{props.title}</h4>
                     </div>
@@ -66,8 +66,8 @@ const CategoryPost = (props) => {
                         onChange={handleChange}
                         style={{marginTop: "10px"}}
                     />:""}
-                </Col>
-            </Row>
+                </div>
+            </div>
         </div>
     )}else{return ""}
 }

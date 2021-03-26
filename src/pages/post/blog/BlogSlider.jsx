@@ -13,7 +13,7 @@ const BlogSlider = (props) => {
                     <div className="row">
                         <div className="blg-slider-text">
                             <div className="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-                                <a href="#" className="blog-post-title">{props.post_reducer.post&&props.post_reducer.post.data&&props.post_reducer.post.data.title}</a>
+                                <a href="#" className="blog-post-title">{props.post_reducer.post&&props.post_reducer.post.data&&props.post_reducer.post.data.titleUz}</a>
                             </div>
                         </div>
                     </div>

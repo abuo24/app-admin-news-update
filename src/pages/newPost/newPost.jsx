@@ -60,6 +60,7 @@ const NewPost = (props) => {
 
     const note = () => toast.info("Yaratildi");
     const danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
+    const danger1 = () => toast.error("Iltimos Postni Rasmini yuklang");
 
     const [form] = Form.useForm();
     const [product_id_list, setProductIdList] = useState({
@@ -77,6 +78,8 @@ const NewPost = (props) => {
                 danger()
             })
         } else {
+
+            if(file.file!=null){
             const bodyFormData = new FormData();
             product_id_list.tags.forEach((item) => {
                 bodyFormData.append('tags', item);
@@ -95,6 +98,9 @@ const NewPost = (props) => {
                 document.getElementById("for_clear").remove();
                 form.resetFields()
             }).catch(err => danger())
+            } else {
+                danger1()
+            }
         }
     };
     useEffect(() => {
