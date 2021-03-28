@@ -33,7 +33,6 @@ const MessageItem = (props)=>{
                     <p>{props.message.message}</p>
                 }
                 datetime={
-                    // <Tooltip title={moment().format(props.message.createAt.toString())}>
                     <Tooltip title={props.message.createAt.toString()}>
                         <span>{moment(props.message.createAt.toString().slice(0,10),'yyyy.MM.DD' , true).fromNow()}</span>
                     </Tooltip>
