@@ -8,8 +8,11 @@ import {connect} from "react-redux";
 import {shortNewsApi} from "../../redux/service/shortNewsApi";
 import {toast, ToastContainer} from "react-toastify";
 import {postsApi} from "../../redux/service/postsApi";
-
+// import {host} from "../../server/host";
+import "ckeditor4-react/dist/ckeditor"
 const NewPost = (props) => {
+
+
 
     const [dataPost, setDataPost] = useState({
         titleUz: "",
@@ -78,7 +81,6 @@ const NewPost = (props) => {
                 danger()
             })
         } else {
-
             if(file.file!=null){
             const bodyFormData = new FormData();
             product_id_list.tags.forEach((item) => {
@@ -95,9 +97,8 @@ const NewPost = (props) => {
             postsApi.addPost(bodyFormData).then(res => {
                 console.log(res)
                 note()
-                document.getElementById("for_clear").remove();
                 form.resetFields()
-            }).catch(err => danger())
+            }).catch(err => console.log(err))
             } else {
                 danger1()
             }
@@ -205,7 +206,7 @@ const NewPost = (props) => {
                                 value={data.category}
                             >
                                 {
-                                    props.category_reducer && props.category_reducer.categories && props.category_reducer.categories.map((item, key) => (
+                                    props.category_reducer && props.category_reducer.categories && props.category_reducer.categories&& props.category_reducer.categories.map((item, key) => (
                                         <Option value={item.id} key={item}>
                                             {props.langReducer.type=="uz"?item.nameUz:item.nameRu}
                                         </Option>
@@ -343,7 +344,8 @@ const NewPost = (props) => {
                                     data="<i>Пишите контент красиво на русском языке </i>"
                                     onChange={onEditorChangeRu}
                                     type="classic"
-                                />
+
+                                    />
                             </Form.Item>
                         </>
                         }

@@ -53,5 +53,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/abuo24/app-admin-news-update.git",
+  "author": "Orifjon Yunusjonov <mryediniofficial9924@gmail.com>",
+  "license": "MIT"
 }

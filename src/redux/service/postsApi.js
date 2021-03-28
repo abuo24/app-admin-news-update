@@ -6,7 +6,12 @@ const config = {
         "Authorization": "Bearer "+localStorage.getItem("token")
     }
 }
+
 export const postsApi = {
+    addPost: (data) => {
+        return axiosInstanceAdmin.post('/news/add', data,config
+        )
+    },
 
     createComment: (newsid, data) => {
         return axios.post(`${host}/comments/${newsid}`, {
@@ -15,10 +20,6 @@ export const postsApi = {
                 comments_id: data.comments_id === "" ? null : data.comments_id,
                 message: data.message
             }
-        )
-    },
-    addPost: (data) => {
-        return axiosInstanceAdmin.post(`${host}/admin/news/add`, data,config
         )
     },
     editPost: (id,data) => {
