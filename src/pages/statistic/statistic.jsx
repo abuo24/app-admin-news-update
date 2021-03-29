@@ -64,36 +64,36 @@ const StatisticPage = (props) => {
                     }/>
                 </Col>
             </Row>
-            <Row style={{margin: +"10px 0px"}}>
-                <Col>
+            <div style={{margin: +"10px 0px"}}>
+                <div>
                     <div className="section-top-bar">
                         <h4>Eng ko'p ko'rishlar</h4>
                     </div>
                     <Row>
                         {getPosts}
                     </Row>
-                </Col>
-            </Row>
-            <Row style={{margin: +"10px 0"}}>
-                <Col>
+                </div>
+            </div>
+            <div style={{margin: +"10px 0"}}>
+                <div>
                     <div className="section-top-bar">
                         <h4>Eng ko'p yoqtirishlar</h4>
                     </div>
                     <Row>
                         {getLikes}
                     </Row>
-                </Col>
-            </Row>
-            <Row style={{margin: +"10px 0px"}}>
-                <Col>
+                </div>
+            </div>
+            <div style={{margin: +"10px 0px"}}>
+                <div>
                     <div className="section-top-bar">
                         <h4>Eng ko'p Commentlar</h4>
                     </div>
                     <Row>
                         {getComments}
                     </Row>
-                </Col>
-            </Row>
+                </div>
+            </div>
         </>
     );
 };

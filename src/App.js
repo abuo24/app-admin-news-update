@@ -2,7 +2,19 @@ import './App.css';
 import React, {useEffect, useState} from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import {LayoutPage} from "./hoc";
-import {Dashboard, Login, Message, NewCategory, NewPost, Post, Posts, Profile, ShortNews, Video} from "./pages";
+import {
+    AllFiles,
+    Dashboard,
+    Login,
+    Message,
+    NewCategory,
+    NewPost,
+    Post,
+    Posts,
+    Profile,
+    ShortNews,
+    Video
+} from "./pages";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {getCategories, getNewsByViewsCount} from "./redux/action/posts";
@@ -11,6 +23,7 @@ import {getMe, getMeByToken} from "./redux/action/authApis";
 import {getTags} from "./redux/action/tagsApi";
 import {getMessage} from "./redux/action/messageApi";
 import {getVideos} from "./redux/action/videosApi";
+import {getAllFiles} from "./redux/action/filesApi";
 
 const App = (props) => {
 
@@ -31,6 +44,7 @@ const App = (props) => {
             props.getCategories();
             props.getTags();
             props.getMessage();
+            props.getAllFiles();
             props.getMe();  props.getVideos()
 
 
@@ -63,6 +77,7 @@ const App = (props) => {
                     <Route exact path={"/newcategori"} component={NewCategory}/>
                     <Route exact path={"/message"} component={Message}/>
                     <Route exact path={"/video"} component={Video}/>
+                    <Route exact path={"/files"} component={AllFiles}/>
                     {/*<Redirect from="/" to={"/dashboard"}/>*/}
 
                 </LayoutPage>
@@ -80,7 +95,8 @@ const mdtp = (dispatch) => (bindActionCreators({
     getCategories,
     getTags,
     getMessage,
-    getVideos
+    getVideos,
+    getAllFiles
 }, dispatch));
 
 export default connect(mstp, mdtp)(App);

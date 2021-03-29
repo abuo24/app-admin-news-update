@@ -10,6 +10,7 @@ import auth_reducer from "./auth_reducer";
 import toggle_reducer from "./toggle_reducer";
 import langReducer from "./langReducer";
 import videos_reducer from "./videos_reducer";
+import files_reducer from "./files_reducer";
 
 const rootReducer = combineReducers({
     post_reducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     auth_reducer,
     toggle_reducer,
     langReducer,
-    videos_reducer
+    videos_reducer,
+    files_reducer
 });
 export default rootReducer;
