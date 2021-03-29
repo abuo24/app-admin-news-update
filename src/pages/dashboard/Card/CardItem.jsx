@@ -91,6 +91,7 @@ const CardItem = (props) => {
             ],
             customRequest: (options) => {
                 test.append('file', options.file)
+
                 postsApi.addImg(test).then(res => {
                         setFile({file: res.data.data})
                         options.onSuccess(res.data, options.file);

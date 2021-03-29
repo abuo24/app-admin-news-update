@@ -79,7 +79,7 @@ const LayoutPage = (props) => {
                             <NavLink to={"/newcategori"}>Yangi Kategoriya +</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub4454de" icon={<ImFilesEmpty/>}>
-                            <NavLink to={"/files"}>Filelar</NavLink>
+                            <NavLink to={"/files"}>Fayllar</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub6" icon={<BiMessageSquareDetail/>}>
                             <NavLink to={"/message"}>Message</NavLink>
