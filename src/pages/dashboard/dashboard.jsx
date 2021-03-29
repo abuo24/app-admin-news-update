@@ -5,7 +5,6 @@ import {connect} from "react-redux";
 
 const Dashboard = (props) => {
     useEffect(() => {
-
     }, []);
 
     return (

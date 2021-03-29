@@ -30,12 +30,8 @@ class LatestVideoItem extends Component {
         stopVideo();
     };
 
-    handleDelete = () => {
-
-    };
 
     note = () => toast.info("O'chirildi");
-    // noteEdit = () => toast.info("O'zgartirildi");
     danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
 
 

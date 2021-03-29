@@ -8,10 +8,7 @@ import {bindActionCreators} from "redux";
 import {getPost} from "../../../redux/action/posts";
 
 class Blog extends Component {
-
-
     render() {
-
         return (
             <>
                 <BlogSlider/>

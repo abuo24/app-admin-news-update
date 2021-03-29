@@ -29,9 +29,7 @@ const App = (props) => {
 
     const [isLogged, setIsLogged] = useState(false);
 
-    console.log(props);
-    console.log(localStorage.getItem("token"));
-    useEffect(() => {
+     useEffect(() => {
         if (localStorage.getItem("token")) {
             setIsLogged(true);
             props.getMe().then().catch(
@@ -78,8 +76,6 @@ const App = (props) => {
                     <Route exact path={"/message"} component={Message}/>
                     <Route exact path={"/video"} component={Video}/>
                     <Route exact path={"/files"} component={AllFiles}/>
-                    {/*<Redirect from="/" to={"/dashboard"}/>*/}
-
                 </LayoutPage>
             </Switch>
         </div>

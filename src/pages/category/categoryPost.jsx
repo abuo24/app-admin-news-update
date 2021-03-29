@@ -29,11 +29,9 @@ const CategoryPost = (props) => {
             pageSize:  res.payload.data.news.length,
             totalPage: res.payload.data.totalPages
         });
-            console.log(res.payload.data)
         }).catch(err=>console.log(err))
     },[]);
 
-    console.log(postList&&postList.posts)
     const getPosts = postList&&postList.posts.map((item, key) => (<Col span={12}><CardItem post={item} key={item.id}/></Col>));
 
     const {data, current, minIndex, maxIndex, pageSize} = paginationList;

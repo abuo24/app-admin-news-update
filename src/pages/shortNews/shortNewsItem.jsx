@@ -25,8 +25,7 @@ class ShortNewsItem extends React.Component {
         if (this.props.post != null) {
             this.setState({loading: false,category_id: this.props.post.category.id})
         }
-        console.log(this.props)
-    }
+      }
 
     handleSelectChange = (name, value) => {
         if (name) {
@@ -49,12 +48,10 @@ class ShortNewsItem extends React.Component {
 
         const handleOk = () => {
             shortNewsApi.edit(this.props.post.id,this.state).then(res => {
-                console.log(res);
                 noteEdit();
                 window.location.reload()
             }).catch(err => {
-                console.log(err);
-                dark()
+                 dark()
             })
         };
 
@@ -72,9 +69,7 @@ class ShortNewsItem extends React.Component {
                 onOk() {
                     shortNewsApi.delete(props.post && props.post.id).then(
                         res => {
-                            // console.log(res)
-                            // props.allPosts()
-                            note();
+                             note();
                             window.location.reload()
                         }
                     ).catch(err => dark());

@@ -13,7 +13,6 @@ const StatisticPage = (props) => {
     const [viewsCounts, setViewsCounts] = useState(0);
     const [likesCounts, setLikesCounts] = useState(0);
     const [postCount, setPostCount] = useState(0);
-    console.log(props);
 
     const posts = props.post_reducer.most_views && props.post_reducer.most_views.data;
     const list = posts && posts.sort((a, b) => (a.viewsCount > b.viewsCount) ? -1 : 1);
@@ -55,12 +54,12 @@ const StatisticPage = (props) => {
                 </Col>
                 <Col span={6}>
                     <Statistic title="Umumiy Yoqtirishlar" value={
-                        likesCounts
+                        likesCounts==null?"0":likesCounts
                     }/>
                 </Col>
                 <Col span={6}>
                     <Statistic title="Umumiy Ko'rishlar" value={
-                        viewsCounts
+                        viewsCounts==null?"0":likesCounts
                     }/>
                 </Col>
             </Row>

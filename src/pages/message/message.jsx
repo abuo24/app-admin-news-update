@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
-import {Card, Comment, Tooltip} from "antd";
+import React from 'react';
+import { Comment, Tooltip} from "antd";
 import moment from 'moment';
 import {connect} from "react-redux";
 
 const Message = (props) => {
-    console.log(props.message_reducer.messages);
-
 
     const getMessage = props.message_reducer.messages&&props.message_reducer.messages.data&&props.message_reducer.messages.data!=null?props.message_reducer.messages&&props.message_reducer.messages.data&&props.message_reducer.messages.data.map((item, key)=>(
         <MessageItem key={key} message={item} />
@@ -13,16 +11,13 @@ const Message = (props) => {
 
     return (
         <div>
-            {getMessage}
+            {props.message_reducer.messages&&props.message_reducer.messages.data&&props.message_reducer.messages.data.length==0?"Xabar yo'q!":getMessage}
         </div>
     );
 };
 const MessageItem = (props)=>{
-    // useEffect(()=>{
-    //     moment.local(true)
-    // },[])
-    // moment.local(true);
     return(
+
         <div className={"my-2 px-2 bg-white text-left"} style={{background: +"white"}}>
             <div
                 className={"ml-5"}

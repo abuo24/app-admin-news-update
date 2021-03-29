@@ -10,8 +10,8 @@ import {toast, ToastContainer} from "react-toastify";
 import {postsApi} from "../../redux/service/postsApi";
 // import {host} from "../../server/host";
 import "ckeditor4-react/dist/ckeditor"
-const NewPost = (props) => {
 
+const NewPost = (props) => {
 
 
     const [dataPost, setDataPost] = useState({
@@ -33,16 +33,13 @@ const NewPost = (props) => {
                 }
             },
             onChange: info => {
-                console.log(info.file);
             },
             customRequest: (options) => {
-                console.log(options)
                 test.append('file', options.file)
                 postsApi.addImg(test).then(res => {
                         setFile({file: res.data.data})
                         options.onSuccess(res.data, options.file);
-                        console.log(res)
-                    }
+                     }
                 ).catch(err => console.log(err))
 
             }
@@ -73,46 +70,40 @@ const NewPost = (props) => {
     const onFinish = () => {
         if (toggle) {
             shortNewsApi.add(data).then(res => {
-                console.log(res)
                 note();
                 form.resetFields();
             }).catch(err => {
-                console.log(err)
-                danger()
+                 danger()
             })
         } else {
-            if(file.file!=null){
-            const bodyFormData = new FormData();
-            product_id_list.tags.forEach((item) => {
-                bodyFormData.append('tags', item);
-            });
-            bodyFormData.append("hash_id", file.file)
-            bodyFormData.append("contentUz", dataPost.contentUz)
-            bodyFormData.append("contentRu", dataPost.contentRu)
-            bodyFormData.append("titleUz", dataPost.titleUz)
-            bodyFormData.append("titleRu", dataPost.titleRu)
-            bodyFormData.append("category_id", data.category)
-            console.log(bodyFormData.keys())
-            console.log(bodyFormData.values())
-            postsApi.addPost(bodyFormData).then(res => {
-                console.log(res)
-                note()
-                form.resetFields()
-            }).catch(err => console.log(err))
+            if (file.file != null) {
+                const bodyFormData = new FormData();
+                product_id_list.tags.forEach((item) => {
+                    bodyFormData.append('tags', item);
+                });
+                bodyFormData.append("hash_id", file.file)
+                bodyFormData.append("contentUz", dataPost.contentUz)
+                bodyFormData.append("contentRu", dataPost.contentRu)
+                bodyFormData.append("titleUz", dataPost.titleUz)
+                bodyFormData.append("titleRu", dataPost.titleRu)
+                bodyFormData.append("category_id", data.category)
+                postsApi.addPost(bodyFormData).then(res => {
+                    console.log(res)
+                    note()
+                    form.resetFields()
+                }).catch(err => console.log(err))
             } else {
                 danger1()
             }
         }
     };
     useEffect(() => {
-        // console.log(props.category_reducer.categories)
-    }, [props]);
+        }, [props]);
 
     const handleSelectChange = (name, value) => {
         if (name) {
             setData({
                 ...data,
-                // ...data.category,
                 [name]: value
             })
         }
@@ -122,11 +113,9 @@ const NewPost = (props) => {
     });
 
     function handleChange(value) {
-        console.log(`selected ${value}`);
         setProductIdList({tags: value}, () => {
         })
-        console.log(product_id_list)
-    }
+     }
 
     const handleSelectChange1 = (name, value) => {
         if (name) {
@@ -151,11 +140,6 @@ const NewPost = (props) => {
             contentRu: evt.editor.getData()
         });
     };
-
-
-    console.log(data);
-    console.log(dataPost);
-
     return (
         <div className="App">
             <div className="d-flex justify-content-start">
@@ -206,9 +190,9 @@ const NewPost = (props) => {
                                 value={data.category}
                             >
                                 {
-                                    props.category_reducer && props.category_reducer.categories && props.category_reducer.categories&& props.category_reducer.categories.map((item, key) => (
+                                    props.category_reducer && props.category_reducer.categories && props.category_reducer.categories && props.category_reducer.categories.map((item, key) => (
                                         <Option value={item.id} key={item}>
-                                            {props.langReducer.type=="uz"?item.nameUz:item.nameRu}
+                                            {props.langReducer.type == "uz" ? item.nameUz : item.nameRu}
                                         </Option>
                                     ))
                                 }
@@ -229,14 +213,14 @@ const NewPost = (props) => {
                                 props.tags_reducer && props.tags_reducer.tags && props.tags_reducer.tags.data.map((item, key) => (
                                     <Option value={item.id} key={item.id}>
 
-                                        {props.langReducer.type=="uz"?item.tagUz:item.tagRu}
+                                        {props.langReducer.type == "uz" ? item.tagUz : item.tagRu}
                                     </Option>
                                 ))
                             }
                             </Select>
                         </Form.Item>
                         }
-                        {toggle &&<> <Form.Item
+                        {toggle && <> <Form.Item
                             label={"Qisqa Xabar matnini kirgizing"}
                             name="titleUz"
                             rules={[
@@ -345,7 +329,7 @@ const NewPost = (props) => {
                                     onChange={onEditorChangeRu}
                                     type="classic"
 
-                                    />
+                                />
                             </Form.Item>
                         </>
                         }

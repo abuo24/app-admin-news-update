@@ -30,9 +30,6 @@ const BlogContent = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(obj);
-
-        console.log(commentData);
         postsApi.createComment(post && post.id, commentData).then(
             res => {
                 setCommentData(null);
@@ -56,8 +53,7 @@ const BlogContent = (props) => {
                 commentsApi.delete(id).then(
                     res => {
                         note1();
-                        // window.location.reload();
-                    }
+                     }
                 ).catch(err => danger())
             }
         });

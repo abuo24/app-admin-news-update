@@ -40,21 +40,16 @@ const Video = (props) => {
     const onFinish = () => {
         videosApi.add(dataPost).then(res => {
             props.getVideos()
-            console.log(res);
             note();
             form.resetFields();
         }).catch(err => {
-            console.log(err);
-            danger()
+             danger()
         })
     };
     const [form] = Form.useForm();
 
     useEffect(() => {
-        // console.log(props.category_reducer.categories)
-    }, [props]);
-
-    console.log(dataPost);
+         }, [props]);
 
     return (
             <div className="App">

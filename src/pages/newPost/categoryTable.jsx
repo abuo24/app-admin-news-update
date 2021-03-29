@@ -119,8 +119,7 @@ class CategoryTable extends React.Component {
     };
     asss = "";
     handleDelete = (key) => {
-        // this.showModal()
-        this.setState({...this.state, isModalVisible: true});
+         this.setState({...this.state, isModalVisible: true});
         this.asss = key;
     };
 
@@ -166,7 +165,6 @@ class CategoryTable extends React.Component {
     note1 = () => toast.info("O'zgartirildi");
 
     handleSave = (row) => {
-        console.log(row);
         categoriesApi.edit(row.id, row).then(
             res => {
                 console.log(res)
@@ -183,8 +181,7 @@ class CategoryTable extends React.Component {
 
     componentDidMount() {
         this.setState({data: this.props.category_reducer && this.props.category_reducer.categories});
-        console.log(this.props)
-    }
+     }
 
     render() {
         const components = {
@@ -211,12 +208,7 @@ class CategoryTable extends React.Component {
         });
 
         const handleOk = () => {
-
-            console.log(this.props)
-            console.log(this.state)
-            categoriesApi.delete(this.asss, this.state.category&&this.state.category).then(res => {
-                console.log(res);
-                // this.state.isModalVisible = false
+    categoriesApi.delete(this.asss, this.state.category&&this.state.category).then(res => {
                 this.showModal()
                 this.props.getCategories();
                 this.note()
@@ -243,9 +235,7 @@ class CategoryTable extends React.Component {
                     <Form
                         name="basic"
                         layout="vertical"
-                        // form={form}
-                        // onFinish={onFinish}
-                    >
+                      >
                         <Row gutter={[16]}>
                             <Col span={24}>
                                 <Form.Item

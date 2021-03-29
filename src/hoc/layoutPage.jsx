@@ -30,7 +30,6 @@ const LayoutPage = (props) => {
     const [collapsed, setCollapsed] = useState(false);
 
     const onCollapse = collapsed => {
-        console.log(collapsed);
         setCollapsed(collapsed);
     };
 
@@ -39,12 +38,10 @@ const LayoutPage = (props) => {
         onOk : () => {
             localStorage.setItem("token",null);
             localStorage.removeItem("token");
-            // props.isLoggedIn()
             window.location.reload()
         }
     };
-    console.log(localStorage.getItem("token"));
-    const [modal, contextHolder] = Modal.useModal();
+   const [modal, contextHolder] = Modal.useModal();
 
     const {SubMenu} = Menu;
     const {Header, Content, Footer, Sider} = Layout;
@@ -102,9 +99,6 @@ const LayoutPage = (props) => {
 
 const mstp = state => (state);
 const mdtp = dispatch => ({
-    // isLoggedIn : () => {
-    //     dispatch(userActions.loggedIn())
-    // }
 })
 
 export default connect(mstp, mdtp)(LayoutPage);

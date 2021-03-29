@@ -35,8 +35,7 @@ class TagsTable extends Component {
 
     componentDidMount() {
         this.setState({data: this.props && this.props.tags_reducer && this.props.tags_reducer.tags.data});
-        console.log(this.props)
-    }
+       }
 
     note = () => toast.info("O'chirildi");
     danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");

@@ -18,8 +18,7 @@ const NewCategoryTags = (props) => {
         console.log(data)
         tagsApi.add(data).then(
             res => {
-                console.log(res)
-                note()
+               note()
                 props.getTags();
                 form.resetFields()
             }
@@ -28,10 +27,7 @@ const NewCategoryTags = (props) => {
     const note = () => toast.info("Yaratildi");
     const danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
     const [form] = Form.useForm();
-
-    console.log(data)
-    console.log(props)
-    return (
+ return (
         <Col span={24}>
 
             <Form
@@ -77,8 +73,6 @@ const NewCategoryTags = (props) => {
                     <Col>
                         <Form.Item>
                             <Button type="primary"
-                                // htmlType="submit"
-                                // loading={isSubmitting}
                                     onClick={onFinish}
                             >
                                 Ok
@@ -88,8 +82,7 @@ const NewCategoryTags = (props) => {
                 </Row>
             </Form>
             <TagsTable
-                // data={props.tags.data}
-            />
+             />
             <ToastContainer/>
         </Col>
     );

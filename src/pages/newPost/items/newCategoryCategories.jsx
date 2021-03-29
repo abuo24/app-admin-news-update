@@ -16,10 +16,8 @@ const NewCategoryCategories = (props) => {
     });
 
     const onFinish = () => {
-        console.log(data);
         categoriesApi.add(data).then(
             res => {
-                console.log(res);
                 note();
                 props.getCategories();
                 props.getTags();
@@ -30,8 +28,6 @@ const NewCategoryCategories = (props) => {
     const note = () => toast.info("Yaratildi");
     const danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
     const [form] = Form.useForm();
-
-    console.log(data);
 
     return (
         <Col span={24} className={"mt-4"}>

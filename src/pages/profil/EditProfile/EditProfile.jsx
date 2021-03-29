@@ -32,10 +32,7 @@ const EditProfile = (props) => {
     const danger = () => toast.error("Biror nima Xato Iltimos qaytadan harakat qiling");
 
     const edit = () => {
-        console.log(data);
         authApi.editUser(data).then(res => {
-            console.log(res);
-            console.log(localStorage.getItem("token"));
             props.getMe();
             note();
             if (localStorage.getItem("token") !== res.data.token) {
@@ -43,7 +40,6 @@ const EditProfile = (props) => {
                 window.location.reload()
             }
         }).catch(err => {
-            console.log(err)
             danger()
         })
     };
@@ -61,10 +57,7 @@ const EditProfile = (props) => {
 
     const user1 = props.auth_reducer.user && props.auth_reducer.user.data;
 
-    console.log(user);
-    console.log(user1);
-
-    const [data, setData] = useState({
+  const [data, setData] = useState({
         fullname: "",
         phone: "",
         social: "",
@@ -78,8 +71,7 @@ const EditProfile = (props) => {
             social: user.social,
             username: user.username
         });
-        console.log(user)
-    }, [user]);
+     }, [user]);
 
     return (
         <div>

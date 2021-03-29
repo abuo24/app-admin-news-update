@@ -37,21 +37,14 @@ const Login = (props) => {
 
     const onFinish = (values) => {
         setRequest(true);
-        console.log(data);
         authApi.login(data).then(
             res => {
-                console.log(res);
                 localStorage.setItem('token', res.data.token)
-                console.log(res.data.token)
-                setRequest(false)
-                console.log(localStorage.getItem("token"));
-                // props.isLoggedIn();
-                // <Redirect to={'/dashboard'}/>
+                 setRequest(false)
                 window.location.reload();
             }
         ).catch(
             err => {
-                console.log(err)
                 setRequest(false)
                 setError("Username yoki password xato!")
             }
@@ -120,10 +113,6 @@ const Login = (props) => {
 
 
 const mstp = state => (state);
-// const mdtp = dispatch => ({
-    // isLoggedIn : () => {
-    //     dispatch(userActions.loggedIn())
-    // }
-// });
+
 
 export default connect(mstp, null)(Login);

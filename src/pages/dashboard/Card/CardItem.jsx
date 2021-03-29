@@ -36,11 +36,9 @@ const CardItem = (props) => {
                 cancelText: "Yo'q",
                 onOk() {
                     postsApi.delete(id).then(res => {
-                        console.log(res)
                         note();
                         window.location.reload()
                     }).catch(err => {
-                        console.log(err)
                         danger()
                     })
                 }
@@ -65,7 +63,6 @@ const CardItem = (props) => {
         post && post.tags.map(item => (
             defaultTags.push(item.id)
         ))
-        console.log(post)
         const [file, setFile] = useState({
             hashId: post.headAttachment != null ? (getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId) : ''
         });
@@ -73,8 +70,7 @@ const CardItem = (props) => {
         const test = new FormData()
 
         const propsFile = {
-            // action: `${getFile+post.headAttachment&&post.headAttachment.hashId&&post.headAttachment.hashId}`,
-            onChange({file, fileList}) {
+             onChange({file, fileList}) {
                 if (file.status !== 'uploading') {
                     console.log(file, fileList);
                 }
@@ -83,8 +79,6 @@ const CardItem = (props) => {
                 {
                     uid: `${post.headAttachment && post.headAttachment.id && post.headAttachment.id}`,
                     name: `${post.headAttachment && post.headAttachment.name && post.headAttachment.name}`,
-                    // status: 'done',
-                    // response: 'Server Error 500',
                     url: `${getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId}`,
                     thumbUrl: `${getFile + post.headAttachment && post.headAttachment.hashId && post.headAttachment.hashId}`,
                 } : ''
@@ -95,7 +89,6 @@ const CardItem = (props) => {
                 postsApi.addImg(test).then(res => {
                         setFile({file: res.data.data})
                         options.onSuccess(res.data, options.file);
-                        console.log(res);
                         setFile({hashId: res.data && res.data.data && res.data.data})
                     }
                 ).catch(err => console.log(err))
@@ -115,7 +108,6 @@ const CardItem = (props) => {
             console.log(`selected ${value}`);
             setDataPost({...dataPost, tags: value}, () => {
             })
-            console.log(dataPost)
         }
 
         const [dataPost, setDataPost] = useState({
@@ -150,12 +142,8 @@ const CardItem = (props) => {
             bodyFormData.append("titleUz", dataPost.titleUz)
             bodyFormData.append("titleRu", dataPost.titleRu)
             bodyFormData.append("category_id", dataPost.category_id)
-            console.log(bodyFormData)
             postsApi.editPost(post.id, bodyFormData).then(res => {
-                console.log(res);
                 noteEdit();
-                // return <Redirect from={"/"} to={"/posts"}/>
-                // form.resetFields()
                 window.location.reload()
             }).catch(err => danger())
         }

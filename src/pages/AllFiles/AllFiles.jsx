@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {render} from "react-dom";
 
-import {Card, Button, Row, Col, Modal, message, Form, Upload, Select, Input} from 'antd';
+import {Card, Button, Row, Col, Modal, message, Form, Upload, Select, Input, Pagination} from 'antd';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getAllFiles} from "../../redux/action/filesApi";
@@ -17,13 +17,39 @@ const styles = {
 };
 
 const AllFiles = (props) => {
+    const [postList, setPostList] = useState(null);
+
+    const [paginationList, setPaginationList] = useState({
+        totalPage: 0,
+        totalItems: 0,
+        current: 1,
+        minIndex: 0,
+        maxIndex: 0,
+        pageSize: 0
+    });
 
     useEffect(() => {
-        props.getAllFiles()
+        props.getAllFiles().then(res => {
+            setPostList({posts: res.payload.data.files})
+            setPaginationList({
+                ...paginationList,
+                current: res.payload.data.currentPage + 1,
+                minIndex: 0,
+                totalItems: res.payload.data.totalItems,
+                maxIndex: res.payload.data.files.length,
+                pageSize: res.payload.data.files.length,
+                totalPage: res.payload.data.totalPages
+            });
+
+        }).catch(err => console.log(err))
+
     }, []);
 
     const info = () => {
         message.info('Nusxalandi');
+    };
+    const info1 = () => {
+        message.info("Qo'shildi");
     };
 
     const test = new FormData();
@@ -33,10 +59,23 @@ const AllFiles = (props) => {
         customRequest: (options) => {
             test.append('file', options.file);
             postsApi.addImg(test).then(res => {
+                message.info("Qo'shildi");
                     options.onSuccess(res.data, options.file);
-                    console.log(res);
+                    props.getAllFiles().then(res => {
+                        setPostList({posts: res.payload.data.files})
+                        setPaginationList({
+                            ...paginationList,
+                            current: res.payload.data.currentPage + 1,
+                            minIndex: 0,
+                            totalItems: res.payload.data.totalItems,
+                            maxIndex: res.payload.data.files.length,
+                            pageSize: res.payload.data.files.length,
+                            totalPage: res.payload.data.totalPages
+                        });
+
+                    }).catch(err => console.log(err))
                 }
-            ).catch(err => console.log(err))
+            ).catch(err => message.error("Maksimal File Hajmi 10MB"))
         }
     }
     const showModal = () => {
@@ -47,10 +86,11 @@ const AllFiles = (props) => {
     };
 
     const handleCancel = () => {
+        form.resetFields();
         setIsModalVisible(false);
     };
 
-    const allFiles = props.files_reducer && props.files_reducer.all && props.files_reducer.all.reverse().map(
+    const allFiles = postList && postList.posts && postList.posts.map(
         (item) => (
             <Col span={8}>
                 <Card title={item.name}>
@@ -66,9 +106,22 @@ const AllFiles = (props) => {
             </Col>
         )
     );
+    const handleChange = (page) => {
+        props.getAllFiles(page - 1).then(res => {
+            setPostList({posts: res.payload.data.files})
+            setPaginationList({
+                ...paginationList,
+                current: page,
+                minIndex: 0,
+                maxIndex: res.payload.data.files.length,
+            });
+        }).catch(err => console.log(err))
+    };
+    const [form] = Form.useForm();
 
     return (
         <div style={styles}>
+            {paginationList&&paginationList.totalItems==0?"Fayllar xali mavjud emas":""}
             <div onClick={showModal} style={{
                 zIndex: "1",
                 position: "fixed",
@@ -84,33 +137,34 @@ const AllFiles = (props) => {
             </div>
             <Modal title="Fayl yuklash" visible={isModalVisible}
                    onOk={handleOk} onCancel={handleCancel}
-                   okButtonProps={{ disabled: true }}
-                   cancelButtonProps={{ disabled: true }}
+                   okButtonProps={{disabled: true, display: "none!important"}}
             >
                 <Form
-                    // form={form}
+                    form={form}
                     name="basic"
                     layout="vertical"
                 >
-                    <Row gutter={[16]}>
-
-                        <Col span={24}>
-                            <div className={"mt-2 d-flex justify-content-start"}>
-                                <Form.Item><Upload
-                                    maxCount={1}
-                                    accept=".jpg"
-                                    {...propsFile}
-                                >
-                                    <Button icon={<UploadOutlined/>}>Yuklash</Button>
-                                </Upload></Form.Item>
-                            </div>
-                        </Col>
-                    </Row>
+                    <div className={"mt-2 d-flex justify-content-start"}>
+                        <Form.Item><Upload
+                            maxCount={1}
+                            accept=".jpg"
+                            {...propsFile}
+                        >
+                            <Button icon={<UploadOutlined/>}>Yuklash</Button>
+                        </Upload></Form.Item>
+                    </div>
                 </Form>
             </Modal>
             <Row>
                 {allFiles}
             </Row>
+            {paginationList.totalPage > 1 ? <Pagination
+                pageSize={paginationList.pageSize && paginationList.pageSize}
+                current={paginationList.current && paginationList.current}
+                total={paginationList.totalItems && paginationList.totalItems}
+                onChange={handleChange}
+                style={{marginTop: "10px"}}
+            /> : ""}
             <ToastContainer autoClose={3000}/>
 
         </div>)
