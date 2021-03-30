@@ -359,9 +359,7 @@ const NewPost = (props) => {
                     </Col>
                 </Row>
                 <ToastContainer autoClose={3000}/>
-
             </Form>
-
         </div>
     );
 };
