@@ -43,12 +43,12 @@ const App = (props) => {
             props.getTags();
             props.getMessage();
             props.getAllFiles();
-            props.getMe();  props.getVideos()
-
-
+            props.getMe();
+            props.getVideos()
         } else {
             setIsLogged(false)
         }
+
     }, []);
 
     if (!isLogged) {

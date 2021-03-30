@@ -311,7 +311,12 @@ const NewPost = (props) => {
                                 <CKEditor
                                     data="<i>Contentni chiroyli ko'rinishda yozing uzbek tilida</i>"
                                     onChange={onEditorChangeUz}
-                                    type="classic"
+                                    // type="classic"
+                                    config={{
+                                        allowedContent :true,
+                                        extraPlugins : 'autogrow,sourcedialog',
+                                        removePlugins : 'sourcearea'
+                                    }}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -327,7 +332,12 @@ const NewPost = (props) => {
                                 <CKEditor
                                     data="<i>Пишите контент красиво на русском языке </i>"
                                     onChange={onEditorChangeRu}
-                                    type="classic"
+                                    // type="classic"
+                                    config={{
+                                    allowedContent :true,
+                                    extraPlugins : 'autogrow,sourcedialog',
+                                    removePlugins : 'sourcearea'
+                                }}
 
                                 />
                             </Form.Item>
