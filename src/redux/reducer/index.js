@@ -11,6 +11,7 @@ import toggle_reducer from "./toggle_reducer";
 import langReducer from "./langReducer";
 import videos_reducer from "./videos_reducer";
 import files_reducer from "./files_reducer";
+import social_reducer from "./social_reducer";
 
 const rootReducer = combineReducers({
     post_reducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     toggle_reducer,
     langReducer,
     videos_reducer,
-    files_reducer
+    files_reducer,
+    social_reducer
 });
 export default rootReducer;

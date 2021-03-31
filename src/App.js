@@ -12,7 +12,7 @@ import {
     Post,
     Posts,
     Profile,
-    ShortNews,
+    ShortNews, Social,
     Video
 } from "./pages";
 import {connect} from "react-redux";
@@ -24,6 +24,7 @@ import {getTags} from "./redux/action/tagsApi";
 import {getMessage} from "./redux/action/messageApi";
 import {getVideos} from "./redux/action/videosApi";
 import {getAllFiles} from "./redux/action/filesApi";
+import {counts} from "./redux/action/socialApi";
 
 const App = (props) => {
 
@@ -44,7 +45,8 @@ const App = (props) => {
             props.getMessage();
             props.getAllFiles();
             props.getMe();
-            props.getVideos()
+            props.getVideos();
+            props.counts();
         } else {
             setIsLogged(false)
         }
@@ -76,6 +78,7 @@ const App = (props) => {
                     <Route exact path={"/message"} component={Message}/>
                     <Route exact path={"/video"} component={Video}/>
                     <Route exact path={"/files"} component={AllFiles}/>
+                    <Route exact path={"/social"} component={Social}/>
                 </LayoutPage>
             </Switch>
         </div>
@@ -92,7 +95,8 @@ const mdtp = (dispatch) => (bindActionCreators({
     getTags,
     getMessage,
     getVideos,
-    getAllFiles
+    getAllFiles,
+    counts
 }, dispatch));
 
 export default connect(mstp, mdtp)(App);

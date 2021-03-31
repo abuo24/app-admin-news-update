@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Breadcrumb, Button, Dropdown, Menu} from "antd";
 import Sider from "antd/lib/layout/Sider";
 import {Layout, Modal} from "antd";
@@ -23,8 +23,10 @@ import {
     BiMessageSquareDetail,
     BsFileEarmarkArrowUp,
     BsFilePost,
-    ImFilesEmpty
+    ImFilesEmpty, TiSocialAtCircular
 } from "react-icons/all";
+import {bindActionCreators} from "redux";
+import {counts} from "../redux/action/socialApi";
 
 const LayoutPage = (props) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -33,6 +35,9 @@ const LayoutPage = (props) => {
         setCollapsed(collapsed);
     };
 
+    useEffect(()=>{
+        props.counts()
+    },[])
     const config = {
         title: 'Profildan chiqishni xoxlaysizmi?',
         onOk : () => {
@@ -53,33 +58,36 @@ const LayoutPage = (props) => {
                 <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key={"u1"} icon={<UserOutlined/>}>
-                            <NavLink to={"/profile"}> Profil</NavLink>
+                            <NavLink  exact to={"/profile"}> Profil</NavLink>
                         </Menu.Item>
 
                         <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                            <NavLink to={"/"}>Statistika</NavLink>
+                            <NavLink exact to={"/"}>Statistika</NavLink>
                         </Menu.Item>
                         <Menu.Item key="2" icon={<BsFilePost/>}>
-                            <NavLink to={"/posts"}>Postlar</NavLink>
+                            <NavLink exact to={"/posts"}>Postlar</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub2" icon={<BookOutlined/>}>
-                            <NavLink to={"/shortnews"}>Qisqa Xabarlar</NavLink>
+                            <NavLink exact to={"/shortnews"}>Qisqa Xabarlar</NavLink>
                         </Menu.Item>
 
                         <Menu.Item key="sub7" icon={<AiOutlineVideoCameraAdd/>}>
-                            <NavLink to={"/video"}>Video qo'shish</NavLink>
+                            <NavLink exact to={"/video"}>Video qo'shish</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub3" icon={<BsFileEarmarkArrowUp/>}>
-                            <NavLink to={"/newpost"}>Yangi post qo'shish</NavLink>
+                            <NavLink exact to={"/newpost"}>Yangi post qo'shish</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub4454" icon={<FileAddFilled/>}>
-                            <NavLink to={"/newcategori"}>Yangi Kategoriya +</NavLink>
+                            <NavLink exact to={"/newcategori"}>Yangi Kategoriya +</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub4454de" icon={<ImFilesEmpty/>}>
-                            <NavLink to={"/files"}>Fayllar</NavLink>
+                            <NavLink exact to={"/files"}>Fayllar</NavLink>
                         </Menu.Item>
                         <Menu.Item key="sub6" icon={<BiMessageSquareDetail/>}>
-                            <NavLink to={"/message"}>Message</NavLink>
+                            <NavLink  exact to={"/message"}>Message</NavLink>
+                        </Menu.Item>
+                        <Menu.Item key="sub89" icon={<TiSocialAtCircular/>}>
+                            <NavLink exact to={"/social"}>Tarmoqlar</NavLink>
                         </Menu.Item>
                         <Menu.Item key={"u2"} icon={<LogoutOutlined/>} onClick={() => {modal.confirm(config);}}>
                             Chiqish
@@ -98,7 +106,6 @@ const LayoutPage = (props) => {
 };
 
 const mstp = state => (state);
-const mdtp = dispatch => ({
-})
+const mdtp = dispatch => (bindActionCreators({counts},dispatch))
 
-export default connect(mstp, mdtp)(LayoutPage);
+export default connect(mstp, mdtp)(LayoutPage)  ;

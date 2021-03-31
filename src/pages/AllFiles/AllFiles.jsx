@@ -7,8 +7,9 @@ import {connect} from "react-redux";
 import {getAllFiles} from "../../redux/action/filesApi";
 import {BsPlus, MdContentCopy} from "react-icons/all";
 import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import {postsApi} from "../../redux/service/postsApi";
+import copyToClipboard from '@svc/react-copy-to-clipboard'
 
 const styles = {
     fontFamily: "sans-serif",
@@ -97,10 +98,7 @@ const AllFiles = (props) => {
                     <a href={item.url} style={{fontSize: "8px!important"}} target={"_blank"}>
                         <p style={{fontSize: "8px!important"}}>{item.url}</p>
                     </a>
-                    <MdContentCopy style={{color: "black", display: "inline-block"}} onClick={() => {
-                        navigator.clipboard.writeText(item.url)
-                        info()
-                    }}/>
+                    <Clips url={item.url}/>
 
                 </Card>
             </Col>
@@ -169,6 +167,24 @@ const AllFiles = (props) => {
 
         </div>)
 };
+
+const Clips = (props) =>{
+    const [change, setChange] = copyToClipboard();
+
+    return(
+        <span
+            onClick={() => {
+                setChange();
+            }}
+        >
+            <input ref={change} value={props.url} style={{display: "none"}}/>
+             <MdContentCopy style={{color: "black", display: "inline-block"}} onClick={() => {
+                 message.info("Nusxalandi")
+             }}/>
+                                  <ToastContainer autoClose={2000}/>
+        </span>
+    )
+}
 
 const mstp = state => state;
 

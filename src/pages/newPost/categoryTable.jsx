@@ -112,14 +112,31 @@ class CategoryTable extends React.Component {
         isModalVisible: false,
         id: ""
     };
+    handleSelectChange1 = (name, value, category) => {
+        console.log(name)
+        console.log(value)
+        console.log(category)
+        if (name) {
+            this.setState({
+                ...this.state,
+            });
 
+            console.log(this.state.data)
+            categoriesApi.edit(category.id, category.nameUz, category.nameRu, value).then(res => {
+                console.log(res)
+                this.note1()
+                this.props.getCategories();
+
+            }).catch(err => this.danger())
+        }
+    };
 
     showModal = () => {
         this.setState({...this.state, isModalVisible: false});
     };
     asss = "";
     handleDelete = (key) => {
-         this.setState({...this.state, isModalVisible: true});
+        this.setState({...this.state, isModalVisible: true});
         this.asss = key;
     };
 
@@ -131,11 +148,39 @@ class CategoryTable extends React.Component {
             dataIndex: 'nameUz',
             width: '30%',
             editable: true,
-        },{
+        }, {
             title: 'NameRu',
             dataIndex: 'nameRu',
             width: '30%',
             editable: true,
+        }, {
+            title: 'Parent',
+            dataIndex: 'parent',
+            width: '30%',
+            render: (_, record) => <Form.Item>
+                <Select
+                    style={{width: '100%'}}
+                    showSearch
+                    defaultValue={record.parent != null ? record.parent.id : undefined}
+                    placeholder={"Kategoriya otasini tanlang"}
+                    onChange={(e) => this.handleSelectChange1('parent', e, record)}
+                >
+                    {record.parent !== null ? <Option value={null} key={902}>
+                        Hech qaysi</Option> : ""}
+                    {this.props.category_reducer && this.props.category_reducer.categories && this.props.category_reducer.categories.map((item, key) => {
+                        if (record.id == item.id) {
+                           return <Option disabled={true} value={item.id} key={item.id}>
+                                {props.langReducer.type == "uz" ? item.nameUz : item.nameRu}
+                            </Option>
+                        } else {
+                           return <Option value={item.id} key={item.id}>
+                                {props.langReducer.type == "uz" ? item.nameUz : item.nameRu}
+                            </Option>
+                        }
+                    })
+                    }
+                </Select>
+            </Form.Item>
         },
             {
                 title: 'Amallar',
@@ -165,6 +210,7 @@ class CategoryTable extends React.Component {
     note1 = () => toast.info("O'zgartirildi");
 
     handleSave = (row) => {
+        console.log(row)
         categoriesApi.edit(row.id, row).then(
             res => {
                 console.log(res)
@@ -181,7 +227,7 @@ class CategoryTable extends React.Component {
 
     componentDidMount() {
         this.setState({data: this.props.category_reducer && this.props.category_reducer.categories});
-     }
+    }
 
     render() {
         const components = {
@@ -208,7 +254,7 @@ class CategoryTable extends React.Component {
         });
 
         const handleOk = () => {
-    categoriesApi.delete(this.asss, this.state.category&&this.state.category).then(res => {
+            categoriesApi.delete(this.asss, this.state.category && this.state.category).then(res => {
                 this.showModal()
                 this.props.getCategories();
                 this.note()
@@ -227,7 +273,8 @@ class CategoryTable extends React.Component {
                 components={components}
                 rowClassName={() => 'editable-row'}
                 columns={columns}
-                dataSource={this.props && this.props.category_reducer && this.props.category_reducer.categories}
+                dataSource={this.props && this.props.category_reducer && this.props.category_reducer.categories && this.props.category_reducer.categories}
+                pagination={{ pageSize: 15}}
             />
             <>
                 <Modal title="Kategoriyani olib tashlash uchun undagi postlarni boshqa kategoriyaga almashtirish"
@@ -235,7 +282,7 @@ class CategoryTable extends React.Component {
                     <Form
                         name="basic"
                         layout="vertical"
-                      >
+                    >
                         <Row gutter={[16]}>
                             <Col span={24}>
                                 <Form.Item
@@ -254,15 +301,15 @@ class CategoryTable extends React.Component {
                                         defaultValue={this.asss}
                                         onChange={(value) => this.handleSelectChange('category', value)}
                                     > {
-                                        this.props && this.props.category_reducer && this.props.category_reducer.categories && this.props.category_reducer.categories.map((item, key) => {
+                                        this.props && this.props.category_reducer && this.props.category_reducer.categories && this.props.category_reducer.categories && this.props.category_reducer.categories.map((item, key) => {
                                             if (this.asss === item.id) {
                                                 return <Option disabled={true} value={item.id} key={item.id}>
-                                                    {this.props.langReducer.type=="uz"?item.nameUz:item.nameRu}
+                                                    {this.props.langReducer.type == "uz" ? item.nameUz : item.nameRu}
                                                 </Option>
 
                                             } else {
                                                 return <Option value={item.id} key={item.id}>
-                                                    {this.props.langReducer.type=="uz"?item.nameUz:item.nameRu}
+                                                    {this.props.langReducer.type == "uz" ? item.nameUz : item.nameRu}
                                                 </Option>
                                             }
                                         })

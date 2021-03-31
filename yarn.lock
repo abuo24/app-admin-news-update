@@ -1523,6 +1523,11 @@
     ejs "^2.6.1"
     magic-string "^0.25.0"
 
+"@svc/react-copy-to-clipboard@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@svc/react-copy-to-clipboard/-/react-copy-to-clipboard-1.0.0.tgz#d1fed15b139e3fcdcbed8c42c1298f3772a9568a"
+  integrity sha512-ZFbdg1VGD75bynFvlMAZTeiN/Y9KjcISye5+d1sDEY28ymuy1zy2OCIsGjcrbSNbN88VunGyuoeJYC+vCygzpg==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz#81ef61947bb268eb9d50523446f9c638fb355906"
