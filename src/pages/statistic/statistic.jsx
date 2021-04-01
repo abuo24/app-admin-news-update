@@ -17,15 +17,15 @@ const StatisticPage = (props) => {
     const posts = props.post_reducer.most_views && props.post_reducer.most_views.data;
     const list = posts && posts.sort((a, b) => (a.viewsCount > b.viewsCount) ? -1 : 1);
     const getPosts = list && list.slice(0, 4).map((item, key) => (
-        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+        <div key={key} className={"col-12 col-md-6"}><CardItem post={item} key={item.id}/></div>));
 
     const likes = posts && posts.sort((a, b) => (a.likesCount > b.likesCount) ? -1 : 1);
     const getLikes = likes && likes.slice(0, 4).map((item, key) => (
-        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+        <div key={key} className={"col-12 col-md-6"}><CardItem post={item} key={item.id}/></div>));
 
     const comments = posts && posts.sort((a, b) => (a.comments.length > b.comments.length) ? -1 : 1);
     const getComments = likes && likes.slice(0, 4).map((item, key) => (
-        <Col key={key} span={12}><CardItem post={item} key={item.id}/></Col>));
+        <div key={key} className={"col-12 col-md-6"}><CardItem post={item} key={item.id}/></div>));
 
     useEffect(() => {
         axios.get(`${host}/admin/news/all`).then(res => {
@@ -68,9 +68,9 @@ const StatisticPage = (props) => {
                     <div className="section-top-bar">
                         <h4>Eng ko'p ko'rishlar</h4>
                     </div>
-                    <Row>
+                    <div className={"row"}>
                         {getPosts}
-                    </Row>
+                    </div>
                 </div>
             </div>
             <div style={{margin: +"10px 0"}}>

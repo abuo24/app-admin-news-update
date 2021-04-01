@@ -32,7 +32,7 @@ const CategoryPost = (props) => {
         }).catch(err=>console.log(err))
     },[]);
 
-    const getPosts = postList&&postList.posts.map((item, key) => (<Col span={12}><CardItem post={item} key={item.id}/></Col>));
+    const getPosts = postList&&postList.posts.map((item, key) => (<div className={"col-12 col-md-6"}><CardItem post={item} key={item.id}/></div>));
 
     const {data, current, minIndex, maxIndex, pageSize} = paginationList;
     const handleChange = (page) => {
@@ -54,9 +54,9 @@ const CategoryPost = (props) => {
                     <div className="section-top-bar">
                         <h4>{props.title}</h4>
                     </div>
-                    <Row>
+                    <div className={"row"}>
                         {getPosts}
-                    </Row>
+                    </div>
                     {paginationList.totalPage>1?<Pagination
                         pageSize={paginationList.pageSize&&paginationList.pageSize}
                         current={paginationList.current&&paginationList.current}

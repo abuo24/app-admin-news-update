@@ -152,8 +152,8 @@ const CardItem = (props) => {
         const [lang, setLang] = useState(type == "uz" ? true : false);
 
         return (
-            <div className="fitness-area m-0 p-0">
-                <div className="container">
+            <div className=" m-0 p-0">
+                <div className="">
                     <div className="ft-slider-area mt-2">
                         <div className="ft-slider-item">
                             {post.headAttachment && post.headAttachment.hashId !== null ?
