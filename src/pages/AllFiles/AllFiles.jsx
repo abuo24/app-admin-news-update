@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {render} from "react-dom";
 
 import {Card, Button, Row, Col, Modal, message, Form, Upload, Select, Input, Pagination} from 'antd';
 import {bindActionCreators} from "redux";
@@ -60,7 +59,7 @@ const AllFiles = (props) => {
         customRequest: (options) => {
             test.append('file', options.file);
             postsApi.addImg(test).then(res => {
-                message.info("Qo'shildi");
+                    message.info("Qo'shildi");
                     options.onSuccess(res.data, options.file);
                     props.getAllFiles().then(res => {
                         setPostList({posts: res.payload.data.files})
